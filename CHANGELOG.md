@@ -2,6 +2,23 @@
 
 ---
 
+## [Phase E] — Post-scaffold Actions — 2026-04-29
+
+### Added
+- `src/deps/resolve.ts` — `getBaseDeps(ctx)` builds the framework-level prod/dev dep list (react, react-dom, vite, tailwindcss, router, UI lib, testing, ESLint, Prettier, TypeScript tooling conditional on `isTS`). `resolveDeps` merges base + feature deps, deduplicates, then either hits `pacote.manifest` in parallel (online) or reads `versions.lock.json` (offline). `writeResolvedDeps` patches the generated `package.json` with resolved semver ranges.
+- `src/deps/versions.lock.json` — pinned versions for React 19, Vite 6, Tailwind v4, both routers, both UI libs, and all tooling.
+- `src/postinstall/git.ts` — runs `git init && git add . && git commit` in `ctx.targetDir`; no-ops when `ctx.git === false`.
+- `src/postinstall/shadcn.ts` — runs `<pm> dlx shadcn@latest add --yes button card input label badge separator`; no-ops when `ctx.ui !== 'shadcn'`.
+- `tests/unit/resolve.test.ts` — 11 tests: `getBaseDeps` variants, `writeResolvedDeps`, offline `resolveDeps` (lock reads, missing-package fallback, deduplication).
+- `tests/unit/postinstall.test.ts` — 7 tests: `initGit` skip + execa call sequence, `runShadcnAdd` skip + `pmDlx` argument assertions.
+
+### Changed
+- `src/index.ts` — replaced stub with full orchestrator: scaffold → dep resolve → install (optional) → shadcn add (optional) → git init (optional) → outro. Each step uses a `@clack/prompts` spinner; failures are caught individually so one non-critical step (shadcn add, git) doesn't abort the whole run.
+- `templates/base/vite.config.[sext].ejs` — added `@tailwindcss/vite` plugin (required for Tailwind v4 + Vite).
+- `templates/base/src/main.[ext].ejs` — wraps `<RouterProvider>` in `<AuthProvider>` so auth context is available app-wide.
+
+---
+
 ## [Phase D] — Build the Templates — 2026-04-29
 
 ### Added

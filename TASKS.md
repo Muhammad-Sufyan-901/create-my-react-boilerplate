@@ -53,15 +53,17 @@ Extracted from `PLANNING.md`. Check off each item as it is completed; update `CH
 
 ---
 
-## Phase E — Post-scaffold Actions
+## Phase E — Post-scaffold Actions ✅
 
-- [ ] `src/deps/resolve.ts` — parallel `pacote.manifest` calls, write resolved versions into the generated `package.json`
-- [ ] `src/deps/versions.lock.json` — offline fallback pinned versions file
-- [ ] `src/pm/run.ts` — `pmInstall` runs install with chosen PM, streaming output (already scaffolded; wire into orchestrator)
-- [ ] `src/postinstall/shadcn.ts` — if `ui === 'shadcn'`, run `dlx shadcn add <primitives>`
-- [ ] `src/postinstall/git.ts` — `git init` + initial commit (skippable via `--no-git`)
-- [ ] Final outro screen with next-steps (`cd <name> && <pm> run dev`)
-- [ ] Wire everything into `src/index.ts` orchestrator (replacing current stub)
+- [x] `src/deps/resolve.ts` — `getBaseDeps(ctx)` builds framework dep lists; `resolveDeps` parallel-resolves via `pacote.manifest`; offline path reads `versions.lock.json`; `writeResolvedDeps` writes to generated `package.json`
+- [x] `src/deps/versions.lock.json` — pinned versions for all packages (React 19, Vite 6, Tailwind v4, etc.)
+- [x] `src/pm/run.ts` — `pmInstall` already implemented; wired into orchestrator
+- [x] `src/postinstall/shadcn.ts` — runs `dlx shadcn@latest add --yes button card input label badge separator`
+- [x] `src/postinstall/git.ts` — `git init` + `git add .` + initial commit; skips if `ctx.git === false`
+- [x] Final outro screen with `cd <name>` + `<pm> run dev` next steps
+- [x] `src/index.ts` fully wired: scaffold → resolve → install → shadcn → git → outro (spinners throughout)
+- [x] Template fixes: `vite.config.[sext].ejs` adds `@tailwindcss/vite` plugin; `main.[ext].ejs` wraps app in `<AuthProvider>`
+- [x] 18 new unit tests (resolve × 11, postinstall × 7); 68 total passing
 
 ---
 
