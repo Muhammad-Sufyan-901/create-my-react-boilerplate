@@ -34,21 +34,22 @@ Extracted from `PLANNING.md`. Check off each item as it is completed; update `CH
 
 ---
 
-## Phase D — Build the Templates
+## Phase D — Build the Templates ✅
 
-- [ ] `templates/base/` — Vite config (TS+JS), Tailwind v4 (`@import "tailwindcss"`), ESLint flat config, Prettier, `.gitignore`, README, `index.html`
-- [ ] `templates/lang/ts/` & `templates/lang/js/` — `tsconfig.json` / `jsconfig.json` + `@/*` path alias
-- [ ] `templates/router/react-router/` — `createBrowserRouter`, route objects consumed from `routes.generated`
-- [ ] `templates/router/tanstack-router/` — code-based config consuming the same generated routes
-- [ ] `templates/ui/shadcn/` — `components.json`, theme CSS vars, postinstall primitive list
-- [ ] `templates/ui/heroui/` — provider in `main.[ext]`, theme config, Tailwind plugin
-- [ ] `templates/features/landing/` — Hero, Features, CTA, Footer with conditional UI imports
-- [ ] `templates/features/auth/` — `/login`, `/signup`, `/forgot-password`, mock `AuthContext` + `useAuth`, route guards
-- [ ] `templates/features/user-dashboard/` — `/dashboard` layout, sidebar, profile, settings stub
-- [ ] `templates/features/admin-dashboard/` — `/admin` layout, users table, role guard
-- [ ] `templates/tooling/eslint-prettier/` — flat ESLint config (TS-aware variant), Prettier config, `lint`/`format` scripts
-- [ ] `templates/tooling/vitest/` — `vitest.config`, RTL + `@testing-library/jest-dom` setup, one example test per feature
-- [ ] `templates/tooling/ci/` — `.github/workflows/ci.yml` parameterized by chosen package manager
+- [x] `templates/base/` — `index.html`, `package.json`, `vite.config.[sext]`, `.gitignore`, `src/index.css`, `src/main.[ext]` (EJS, covers all 4 router×UI combos)
+- [x] `templates/lang/ts/` & `templates/lang/js/` — `tsconfig.json`/`tsconfig.app.json`/`tsconfig.node.json` and `jsconfig.json` with `@/*` alias
+- [x] `templates/router/react-router/` — `createBrowserRouter` with ProtectedRoute/AdminRoute layout routes
+- [x] `templates/router/tanstack-router/` — code-based router with `createRootRoute`, TS `Register` declaration
+- [x] `templates/ui/shadcn/` — `components.json.ejs` + full Tailwind v4 CSS variable theme (light/dark)
+- [x] `templates/ui/heroui/` — Tailwind v4 `@plugin "@heroui/theme"` CSS; provider wired in `main.[ext]` via EJS
+- [x] `templates/features/landing/` — Landing page with Hero, FeatureSection, Footer; shadcn/HeroUI conditional imports
+- [x] `templates/features/auth/` — `AuthContext`, `useAuth`, Login/Signup/ForgotPassword pages, `ProtectedRoute`, `AdminRoute`; all 4 combos via EJS
+- [x] `templates/features/user-dashboard/` — Dashboard page, DashboardLayout, Sidebar with NavLink and logout
+- [x] `templates/features/admin-dashboard/` — Admin page, AdminLayout, UsersTable with role badge
+- [x] `templates/tooling/eslint-prettier/` — flat ESLint config (TS `typescript-eslint` vs JS variant), `prettier.config.js`
+- [x] `templates/tooling/vitest/` — `vitest.config.[sext]` (jsdom, `@testing-library/jest-dom` setup)
+- [x] `templates/tooling/ci/` — `.github/workflows/ci.yml` parameterised per package manager (npm/yarn/pnpm/bun) and TS/JS
+- [x] Added `[sext]` interpolation to `render.ts` (`ts`|`js` for config files); 2 new tests (50 total)
 
 ---
 

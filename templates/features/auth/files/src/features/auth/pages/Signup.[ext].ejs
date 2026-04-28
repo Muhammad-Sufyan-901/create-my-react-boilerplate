@@ -1,0 +1,106 @@
+import { useState } from 'react';
+<% if (router === 'react-router') { %>
+import { Link, useNavigate } from 'react-router';
+<% } else { %>
+import { Link, useNavigate } from '@tanstack/react-router';
+<% } %>
+<% if (ui === 'shadcn') { %>
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+<% } else { %>
+import { Button, Input, Card, CardHeader, CardBody, CardFooter } from '@heroui/react';
+<% } %>
+import { useAuth } from '@/hooks/useAuth';
+
+export default function Signup() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<% if (isTS) { %><string | null><% } %>(null);
+  const [isPending, setIsPending] = useState(false);
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e<% if (isTS) { %>: React.FormEvent<% } %>) => {
+    e.preventDefault();
+    setError(null);
+    setIsPending(true);
+    try {
+      await signup(name, email, password);
+<% if (router === 'react-router') { %>
+      navigate('/dashboard');
+<% } else { %>
+      void navigate({ to: '/dashboard' });
+<% } %>
+    } catch {
+      setError('Could not create account. Please try again.');
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+<% if (ui === 'shadcn') { %>
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl">Create an account</CardTitle>
+          <CardDescription>Enter your details to get started.</CardDescription>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            {error && <p className="text-sm text-destructive">{error}</p>}
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" placeholder="Jane Doe" value={name} onChange={e => setName(e.target.value)} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col gap-3">
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? 'Creating account…' : 'Create account'}
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Already have an account?{' '}
+              <Link to="/login" className="underline underline-offset-4 hover:text-primary">Sign in</Link>
+            </p>
+          </CardFooter>
+        </form>
+      </Card>
+<% } else { %>
+      <Card className="w-full max-w-md p-2">
+        <CardHeader className="flex flex-col gap-1 pb-0">
+          <h1 className="text-2xl font-bold">Create an account</h1>
+          <p className="text-small text-default-500">Enter your details to get started.</p>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardBody className="flex flex-col gap-4">
+            {error && <p className="text-sm text-danger">{error}</p>}
+            <Input label="Name" placeholder="Jane Doe" value={name} onValueChange={setName} isRequired />
+            <Input label="Email" type="email" placeholder="you@example.com" value={email} onValueChange={setEmail} isRequired />
+            <Input label="Password" type="password" value={password} onValueChange={setPassword} isRequired />
+          </CardBody>
+          <CardFooter className="flex flex-col gap-3">
+            <Button type="submit" color="primary" className="w-full" isLoading={isPending}>
+              Create account
+            </Button>
+            <p className="text-center text-small text-default-500">
+              Already have an account?{' '}
+              <Link to="/login" className="underline">Sign in</Link>
+            </p>
+          </CardFooter>
+        </form>
+      </Card>
+<% } %>
+    </div>
+  );
+}

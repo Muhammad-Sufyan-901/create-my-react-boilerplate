@@ -1,0 +1,31 @@
+<% if (router === 'react-router') { %>
+import { Outlet, Navigate } from 'react-router';
+<% } else { %>
+import { Outlet, useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
+<% } %>
+import { useAuth } from '@/hooks/useAuth';
+
+export default function ProtectedRoute() {
+  const { user, isLoading } = useAuth();
+<% if (router === 'tanstack-router') { %>
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoading && !user) void navigate({ to: '/login', replace: true });
+  }, [user, isLoading, navigate]);
+<% } %>
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <span className="text-muted-foreground">Loading…</span>
+      </div>
+    );
+  }
+<% if (router === 'react-router') { %>
+  if (!user) return <Navigate to="/login" replace />;
+<% } else { %>
+  if (!user) return null;
+<% } %>
+  return <Outlet />;
+}

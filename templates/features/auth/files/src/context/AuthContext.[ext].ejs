@@ -1,0 +1,73 @@
+import { createContext, useContext, useState, useEffect<% if (isTS) { %>, type ReactNode<% } %> } from 'react';
+<% if (isTS) { %>
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'user' | 'admin';
+}
+
+interface AuthContextValue {
+  user: User | null;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+  signup: (name: string, email: string, password: string) => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+<% } else { %>
+const AuthContext = createContext(null);
+<% } %>
+
+const STORAGE_KEY = 'auth_user';
+
+export function AuthProvider(<% if (isTS) { %>{ children }: { children: ReactNode }<% } else { %>{ children }<% } %>) {
+  const [user, setUser] = useState<% if (isTS) { %><User | null><% } %>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY);
+      if (stored) setUser(JSON.parse(stored)<% if (isTS) { %> as User<% } %>);
+    } catch { /* ignore */ }
+    setIsLoading(false);
+  }, []);
+
+  const login = async (email<% if (isTS) { %>: string<% } %>, _password<% if (isTS) { %>: string<% } %>) => {
+    // Mock — replace with your real API call
+    await new Promise(r => setTimeout(r, 400));
+    const mockUser<% if (isTS) { %>: User<% } %> = {
+      id: crypto.randomUUID(),
+      name: email.split('@')[0],
+      email,
+      role: email.startsWith('admin') ? 'admin' : 'user',
+    };
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
+    setUser(mockUser);
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem(STORAGE_KEY);
+    setUser(null);
+  };
+
+  const signup = async (name<% if (isTS) { %>: string<% } %>, email<% if (isTS) { %>: string<% } %>, _password<% if (isTS) { %>: string<% } %>) => {
+    await new Promise(r => setTimeout(r, 400));
+    const mockUser<% if (isTS) { %>: User<% } %> = { id: crypto.randomUUID(), name, email, role: 'user' };
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
+    setUser(mockUser);
+  };
+
+  return (
+    <AuthContext value={{ user, isLoading, login, logout, signup }}>
+      {children}
+    </AuthContext>
+  );
+}
+
+export function useAuthContext() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuthContext must be used inside <AuthProvider>');
+  return ctx;
+}

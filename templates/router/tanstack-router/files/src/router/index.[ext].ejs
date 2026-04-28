@@ -1,0 +1,43 @@
+import {
+  createRouter,
+  createRoute,
+  createRootRoute,
+  Outlet,
+} from '@tanstack/react-router';
+import Landing from '@/features/landing';
+import Login from '@/features/auth/pages/Login';
+import Signup from '@/features/auth/pages/Signup';
+import ForgotPassword from '@/features/auth/pages/ForgotPassword';
+import Dashboard from '@/features/user-dashboard/pages/Dashboard';
+import Admin from '@/features/admin-dashboard/pages/Admin';
+import ProtectedRoute from '@/features/auth/components/ProtectedRoute';
+import AdminRoute from '@/features/auth/components/AdminRoute';
+
+const rootRoute = createRootRoute({ component: () => <Outlet /> });
+
+const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: '/', component: Landing });
+const loginRoute = createRoute({ getParentRoute: () => rootRoute, path: '/login', component: Login });
+const signupRoute = createRoute({ getParentRoute: () => rootRoute, path: '/signup', component: Signup });
+const forgotPasswordRoute = createRoute({ getParentRoute: () => rootRoute, path: '/forgot-password', component: ForgotPassword });
+
+const protectedLayout = createRoute({ getParentRoute: () => rootRoute, id: 'protected', component: ProtectedRoute });
+const dashboardRoute = createRoute({ getParentRoute: () => protectedLayout, path: '/dashboard', component: Dashboard });
+
+const adminLayout = createRoute({ getParentRoute: () => rootRoute, id: 'admin-guard', component: AdminRoute });
+const adminRoute = createRoute({ getParentRoute: () => adminLayout, path: '/admin', component: Admin });
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  loginRoute,
+  signupRoute,
+  forgotPasswordRoute,
+  protectedLayout.addChildren([dashboardRoute]),
+  adminLayout.addChildren([adminRoute]),
+]);
+
+export const router = createRouter({ routeTree });
+<% if (isTS) { %>
+declare module '@tanstack/react-router' {
+  interface Register { router: typeof router }
+}
+<% } %>

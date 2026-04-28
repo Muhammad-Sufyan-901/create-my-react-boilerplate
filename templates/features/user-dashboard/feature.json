@@ -1,0 +1,11 @@
+{
+  "id": "user-dashboard",
+  "files": ["**/*"],
+  "dependencies": { "any": [] },
+  "routes": [
+    { "path": "/dashboard", "component": "features/user-dashboard/pages/Dashboard", "guard": "auth" }
+  ],
+  "navItems": [
+    { "label": "Dashboard", "to": "/dashboard", "scope": "auth" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "admin-dashboard",
+  "files": ["**/*"],
+  "dependencies": { "any": [] },
+  "routes": [
+    { "path": "/admin", "component": "features/admin-dashboard/pages/Admin", "guard": "admin" }
+  ],
+  "navItems": [
+    { "label": "Admin", "to": "/admin", "scope": "admin" }
+  ]
+}

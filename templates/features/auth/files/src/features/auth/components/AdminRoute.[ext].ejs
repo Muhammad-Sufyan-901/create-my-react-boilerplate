@@ -1,0 +1,35 @@
+<% if (router === 'react-router') { %>
+import { Outlet, Navigate } from 'react-router';
+<% } else { %>
+import { Outlet, useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
+<% } %>
+import { useAuth } from '@/hooks/useAuth';
+
+export default function AdminRoute() {
+  const { user, isLoading } = useAuth();
+<% if (router === 'tanstack-router') { %>
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isLoading) {
+      if (!user) void navigate({ to: '/login', replace: true });
+      else if (user.role !== 'admin') void navigate({ to: '/dashboard', replace: true });
+    }
+  }, [user, isLoading, navigate]);
+<% } %>
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <span className="text-muted-foreground">Loading…</span>
+      </div>
+    );
+  }
+<% if (router === 'react-router') { %>
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
+<% } else { %>
+  if (!user || user.role !== 'admin') return null;
+<% } %>
+  return <Outlet />;
+}

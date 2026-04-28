@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "@heroui/theme" {
+  layout: "default";
+  defaultTheme: "light";
+  addCommonColors: true;
+}
+
+@layer base {
+  body { @apply min-h-screen font-sans antialiased; }
+}

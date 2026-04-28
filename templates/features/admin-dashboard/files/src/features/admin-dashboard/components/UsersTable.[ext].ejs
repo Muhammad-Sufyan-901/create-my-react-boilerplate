@@ -1,0 +1,49 @@
+<% if (isTS) { %>
+interface UserRow {
+  id: string;
+  name: string;
+  email: string;
+  role: 'user' | 'admin';
+  joined: string;
+}
+
+<% } %>
+const MOCK_USERS<% if (isTS) { %>: UserRow[]<% } %> = [
+  { id: '1', name: 'Alice Johnson', email: 'alice@example.com', role: 'admin', joined: '2024-01-10' },
+  { id: '2', name: 'Bob Smith',     email: 'bob@example.com',   role: 'user',  joined: '2024-02-14' },
+  { id: '3', name: 'Carol White',   email: 'carol@example.com', role: 'user',  joined: '2024-03-05' },
+];
+
+export default function UsersTable() {
+  return (
+    <div className="overflow-x-auto rounded-lg border">
+      <table className="w-full text-sm">
+        <thead className="border-b bg-muted/50">
+          <tr>
+            {['Name', 'Email', 'Role', 'Joined'].map(h => (
+              <th key={h} className="px-4 py-3 text-left font-medium text-muted-foreground">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {MOCK_USERS.map(u => (
+            <tr key={u.id} className="bg-card hover:bg-muted/30 transition-colors">
+              <td className="px-4 py-3 font-medium">{u.name}</td>
+              <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
+              <td className="px-4 py-3">
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                  u.role === 'admin'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-secondary text-secondary-foreground'
+                }`}>
+                  {u.role}
+                </span>
+              </td>
+              <td className="px-4 py-3 text-muted-foreground">{u.joined}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

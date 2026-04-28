@@ -1,0 +1,36 @@
+<% if (router === 'react-router') { %>
+import { Link } from 'react-router';
+<% } else { %>
+import { Link } from '@tanstack/react-router';
+<% } %>
+<% if (ui === 'shadcn') { %>
+import { Button } from '@/components/ui/button';
+<% } else { %>
+import { Button } from '@heroui/react';
+<% } %>
+
+export default function Hero() {
+  return (
+    <section className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-24 text-center">
+      <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+        Welcome to <span className="text-primary"><%= name %></span>
+      </h1>
+      <p className="max-w-xl text-lg text-muted-foreground">
+        A modern React starter with authentication, dashboards, and everything you need to ship fast.
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+<% if (ui === 'shadcn') { %>
+        <Button asChild size="lg">
+          <Link to="/signup">Get started</Link>
+        </Button>
+        <Button asChild variant="outline" size="lg">
+          <Link to="/login">Sign in</Link>
+        </Button>
+<% } else { %>
+        <Button as={Link} to="/signup" color="primary" size="lg">Get started</Button>
+        <Button as={Link} to="/login" variant="bordered" size="lg">Sign in</Button>
+<% } %>
+      </div>
+    </section>
+  );
+}

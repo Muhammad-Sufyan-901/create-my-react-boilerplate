@@ -61,6 +61,15 @@ describe('interpolateFilename', () => {
     expect(interpolateFilename('main.tsx', BASE_CTX)).toBe('main.tsx');
   });
 
+  it('replaces [sext] with ts for TypeScript context', () => {
+    expect(interpolateFilename('vite.config.[sext]', BASE_CTX)).toBe('vite.config.ts');
+  });
+
+  it('replaces [sext] with js for JavaScript context', () => {
+    const ctx = { ...BASE_CTX, language: 'js' as const, isTS: false, ext: 'jsx' };
+    expect(interpolateFilename('vite.config.[sext]', ctx)).toBe('vite.config.js');
+  });
+
   it('uses js ext for JS context', () => {
     const ctx = { ...BASE_CTX, language: 'js' as const, isTS: false, ext: 'jsx' };
     expect(interpolateFilename('App.[ext]', ctx)).toBe('App.jsx');

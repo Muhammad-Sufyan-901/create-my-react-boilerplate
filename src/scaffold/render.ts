@@ -5,7 +5,8 @@ import type { ScaffoldContext } from '../types.js';
 
 /**
  * Replaces context-specific placeholders in a single filename or dir-name segment.
- *   [ext]        → "tsx" | "jsx"
+ *   [ext]        → "tsx" | "jsx"  (React component extension)
+ *   [sext]       → "ts"  | "js"   (script/config extension — no JSX)
  *   __router__   → "react-router" | "tanstack-router"
  *   __ui__       → "shadcn" | "heroui"
  *   __lang__     → "ts" | "js"
@@ -13,6 +14,7 @@ import type { ScaffoldContext } from '../types.js';
 export function interpolateFilename(name: string, ctx: ScaffoldContext): string {
   return name
     .replace(/\[ext\]/g, ctx.ext)
+    .replace(/\[sext\]/g, ctx.isTS ? 'ts' : 'js')
     .replace(/__router__/g, ctx.router)
     .replace(/__ui__/g, ctx.ui)
     .replace(/__lang__/g, ctx.language);

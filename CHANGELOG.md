@@ -2,6 +2,30 @@
 
 ---
 
+## [Phase D] — Build the Templates — 2026-04-29
+
+### Added
+- `src/scaffold/render.ts` — added `[sext]` placeholder (`ts`|`js`) for config-file names; 2 new tests.
+- `templates/base/` — `index.html.ejs`, `package.json.ejs` (scripts branch on `isTS`), `vite.config.[sext].ejs` (path alias `@/*`), `.gitignore`, `src/index.css` (`@import "tailwindcss"`), `src/main.[ext].ejs` (EJS branches on `router` + `ui` for all 4 combos).
+- `templates/lang/ts/` — `tsconfig.json`, `tsconfig.app.json` (bundler resolution, `@/*` alias), `tsconfig.node.json`.
+- `templates/lang/js/` — `jsconfig.json` (`checkJs`, `@/*` alias).
+- `templates/router/react-router/files/src/router/index.[ext].ejs` — `createBrowserRouter` with layout routes for `ProtectedRoute` and `AdminRoute`.
+- `templates/router/tanstack-router/files/src/router/index.[ext].ejs` — `createRouter` with `createRootRoute`; TS `declare module Register` block guarded by `isTS`.
+- `templates/ui/shadcn/components.json.ejs` — `tsx` field driven by `isTS`.
+- `templates/ui/shadcn/src/index.css` — full Tailwind v4 `@theme` token set for light + dark.
+- `templates/ui/heroui/src/index.css` — Tailwind v4 `@plugin "@heroui/theme"`.
+- `templates/tooling/eslint-prettier/eslint.config.[sext].ejs` — `typescript-eslint` config for TS, plain ESLint config for JS.
+- `templates/tooling/eslint-prettier/prettier.config.js` — single quotes, trailing commas, `prettier-plugin-tailwindcss`.
+- `templates/tooling/vitest/vitest.config.[sext].ejs` — jsdom environment, `@testing-library/jest-dom` setup file.
+- `templates/tooling/vitest/src/test/setup.[sext].ejs` — `@testing-library/jest-dom` import.
+- `templates/tooling/ci/.github/workflows/ci.yml.ejs` — GitHub Actions matrix (Node 20+22), full per-PM install/lint/typecheck/test/build pipeline.
+- `templates/features/landing/feature.json` + `files/` — Landing page, Hero, FeatureSection (shadcn/HeroUI conditional), Footer.
+- `templates/features/auth/feature.json` + `files/` — `AuthContext` (mock login/signup/logout, sessionStorage), `useAuth` re-export, Login/Signup/ForgotPassword pages (all router×UI EJS combos), `ProtectedRoute`, `AdminRoute`.
+- `templates/features/user-dashboard/feature.json` + `files/` — Dashboard page, DashboardLayout, Sidebar (NavLink active class, logout).
+- `templates/features/admin-dashboard/feature.json` + `files/` — Admin page, AdminLayout, UsersTable with mock data and role badge.
+
+---
+
 ## [Phase C] — Templating Engine — 2026-04-28
 
 ### Added

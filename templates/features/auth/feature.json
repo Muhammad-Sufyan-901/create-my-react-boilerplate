@@ -1,0 +1,16 @@
+{
+  "id": "auth",
+  "files": ["**/*"],
+  "dependencies": {
+    "any": ["react-hook-form", "zod", "@hookform/resolvers"]
+  },
+  "routes": [
+    { "path": "/login",           "component": "features/auth/pages/Login" },
+    { "path": "/signup",          "component": "features/auth/pages/Signup" },
+    { "path": "/forgot-password", "component": "features/auth/pages/ForgotPassword" }
+  ],
+  "navItems": [
+    { "label": "Login",   "to": "/login",  "scope": "public" },
+    { "label": "Sign Up", "to": "/signup", "scope": "public" }
+  ]
+}
