@@ -24,13 +24,13 @@ Extracted from `PLANNING.md`. Check off each item as it is completed; update `CH
 
 ---
 
-## Phase C — Templating Engine
+## Phase C — Templating Engine ✅
 
-- [ ] `src/scaffold/render.ts` — recursive EJS render with filename interpolation (`[ext]`, `__router__/`, etc.)
-- [ ] `src/scaffold/compose.ts` — layer ordering (`base → lang → router → ui → tooling → features`), later layer wins
-- [ ] `src/scaffold/inject.ts` — `/* @inject:<tag> */` marker replacement with router/ui fragments
-- [ ] `src/scaffold/manifest.ts` — load `feature.json`, merge route lists, emit `routes.generated.[ext]`
-- [ ] Unit tests for `render`, `compose`, `inject`, `manifest`
+- [x] `src/scaffold/render.ts` — recursive EJS render with filename interpolation (`[ext]`, `__router__/`, etc.)
+- [x] `src/scaffold/compose.ts` — layer ordering (`base → lang → router → ui → tooling → features`), later layer wins
+- [x] `src/scaffold/inject.ts` — `/* @inject:<tag> */` marker replacement with router/ui fragments
+- [x] `src/scaffold/manifest.ts` — load `feature.json`, merge route lists, emit `routes.generated.[ext]`
+- [x] Unit tests for `render`, `compose`, `inject`, `manifest` (48 tests, all passing)
 
 ---
 

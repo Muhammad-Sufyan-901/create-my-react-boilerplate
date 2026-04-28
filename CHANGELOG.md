@@ -1,5 +1,20 @@
 # CHANGELOG
 
+---
+
+## [Phase C] — Templating Engine — 2026-04-28
+
+### Added
+- `src/scaffold/render.ts` — `renderLayer(srcDir, targetDir, ctx)` walks a template layer directory; `.ejs` files are rendered via EJS and the suffix stripped, other files are copied as-is; filenames and directory names are interpolated (`[ext]`, `__router__`, `__ui__`, `__lang__`). Exported `interpolateFilename` for testing.
+- `src/scaffold/inject.ts` — `injectFragments(targetDir, ctx, templatesDir?)` walks the rendered output tree and replaces `/* @inject:<tag> */` markers with the content of matching fragment files; looks in `router/{router}/fragments/` then `ui/{ui}/fragments/`; leaves unresolvable markers intact. Exported `resolveFragment` for testing.
+- `src/scaffold/manifest.ts` — `loadManifest(featureDir)` parses `feature.json`; `mergeManifests(manifests, ctx)` deduplicates and filters deps by UI + language; `emitRoutes(manifests, ctx)` writes `src/router/routes.generated.[ext]` aggregating all feature routes and navItems.
+- `src/scaffold/compose.ts` — `composeProject(ctx, templatesDir?)` orchestrates the full layer pipeline: base → lang → router → ui → tooling → features, then runs fragment injection and returns `ComposedDeps`. Accepts an optional `templatesDir` override to support unit testing without real template files.
+- `vitest.config.ts` — configures vitest to find tests under `tests/**/*.test.ts` with v8 coverage.
+- `tests/unit/render.test.ts` — 16 tests covering `interpolateFilename` and `renderLayer` (EJS rendering, filename interpolation, directory interpolation, overwrite semantics, no-op on missing dir).
+- `tests/unit/inject.test.ts` — 12 tests covering `resolveFragment` (lookup order, fallback, null on miss) and `injectFragments` (single/multi marker, unknown marker preserved, nested dirs, non-text files skipped).
+- `tests/unit/manifest.test.ts` — 13 tests covering `loadManifest`, `mergeManifests` (dep filtering by UI/lang, deduplication, multi-manifest merge), and `emitRoutes` (output path, content, JS/TS variants).
+- `tests/unit/compose.test.ts` — 7 tests covering `composeProject` end-to-end with minimal test fixture templates (dir creation, layer ordering, routes emission, dep return, JS context).
+
 All notable changes to this project are documented here. Each entry corresponds to a completed phase or task from `TASKS.md`.
 
 ---
