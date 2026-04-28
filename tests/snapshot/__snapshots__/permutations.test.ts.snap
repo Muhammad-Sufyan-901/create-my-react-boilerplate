@@ -1,0 +1,645 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`scaffold permutations > 'js'-'react-router'-'heroui' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "eslint.config.js",
+  "index.html",
+  "jsconfig.json",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.jsx",
+  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/pages/Admin.jsx",
+  "src/features/auth/components/AdminRoute.jsx",
+  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/auth/pages/ForgotPassword.jsx",
+  "src/features/auth/pages/Login.jsx",
+  "src/features/auth/pages/Signup.jsx",
+  "src/features/landing/components/FeatureSection.jsx",
+  "src/features/landing/components/Footer.jsx",
+  "src/features/landing/components/Hero.jsx",
+  "src/features/landing/index.jsx",
+  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/pages/Dashboard.jsx",
+  "src/hooks/useAuth.jsx",
+  "src/index.css",
+  "src/main.jsx",
+  "src/router/index.jsx",
+  "src/router/routes.generated.jsx",
+  "src/test/setup.js",
+  "vite.config.js",
+  "vitest.config.js",
+]
+`;
+
+exports[`scaffold permutations > 'js'-'react-router'-'heroui' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from 'react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+import { HeroUIProvider } from '@heroui/react';
+
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <HeroUIProvider>
+        <RouterProvider router={router} />
+      </HeroUIProvider>
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'js'-'react-router'-'heroui' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'js'-'react-router'-'shadcn' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "components.json",
+  "eslint.config.js",
+  "index.html",
+  "jsconfig.json",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.jsx",
+  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/pages/Admin.jsx",
+  "src/features/auth/components/AdminRoute.jsx",
+  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/auth/pages/ForgotPassword.jsx",
+  "src/features/auth/pages/Login.jsx",
+  "src/features/auth/pages/Signup.jsx",
+  "src/features/landing/components/FeatureSection.jsx",
+  "src/features/landing/components/Footer.jsx",
+  "src/features/landing/components/Hero.jsx",
+  "src/features/landing/index.jsx",
+  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/pages/Dashboard.jsx",
+  "src/hooks/useAuth.jsx",
+  "src/index.css",
+  "src/main.jsx",
+  "src/router/index.jsx",
+  "src/router/routes.generated.jsx",
+  "src/test/setup.js",
+  "vite.config.js",
+  "vitest.config.js",
+]
+`;
+
+exports[`scaffold permutations > 'js'-'react-router'-'shadcn' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from 'react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <RouterProvider router={router} />
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'js'-'react-router'-'shadcn' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'js'-'tanstack-router'-'heroui' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "eslint.config.js",
+  "index.html",
+  "jsconfig.json",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.jsx",
+  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/pages/Admin.jsx",
+  "src/features/auth/components/AdminRoute.jsx",
+  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/auth/pages/ForgotPassword.jsx",
+  "src/features/auth/pages/Login.jsx",
+  "src/features/auth/pages/Signup.jsx",
+  "src/features/landing/components/FeatureSection.jsx",
+  "src/features/landing/components/Footer.jsx",
+  "src/features/landing/components/Hero.jsx",
+  "src/features/landing/index.jsx",
+  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/pages/Dashboard.jsx",
+  "src/hooks/useAuth.jsx",
+  "src/index.css",
+  "src/main.jsx",
+  "src/router/index.jsx",
+  "src/router/routes.generated.jsx",
+  "src/test/setup.js",
+  "vite.config.js",
+  "vitest.config.js",
+]
+`;
+
+exports[`scaffold permutations > 'js'-'tanstack-router'-'heroui' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from '@tanstack/react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+import { HeroUIProvider } from '@heroui/react';
+
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <HeroUIProvider>
+        <RouterProvider router={router} />
+      </HeroUIProvider>
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'js'-'tanstack-router'-'heroui' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'js'-'tanstack-router'-'shadcn' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "components.json",
+  "eslint.config.js",
+  "index.html",
+  "jsconfig.json",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.jsx",
+  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/pages/Admin.jsx",
+  "src/features/auth/components/AdminRoute.jsx",
+  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/auth/pages/ForgotPassword.jsx",
+  "src/features/auth/pages/Login.jsx",
+  "src/features/auth/pages/Signup.jsx",
+  "src/features/landing/components/FeatureSection.jsx",
+  "src/features/landing/components/Footer.jsx",
+  "src/features/landing/components/Hero.jsx",
+  "src/features/landing/index.jsx",
+  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/pages/Dashboard.jsx",
+  "src/hooks/useAuth.jsx",
+  "src/index.css",
+  "src/main.jsx",
+  "src/router/index.jsx",
+  "src/router/routes.generated.jsx",
+  "src/test/setup.js",
+  "vite.config.js",
+  "vitest.config.js",
+]
+`;
+
+exports[`scaffold permutations > 'js'-'tanstack-router'-'shadcn' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from '@tanstack/react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <RouterProvider router={router} />
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'js'-'tanstack-router'-'shadcn' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "eslint.config.ts",
+  "index.html",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.tsx",
+  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/pages/Admin.tsx",
+  "src/features/auth/components/AdminRoute.tsx",
+  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/auth/pages/ForgotPassword.tsx",
+  "src/features/auth/pages/Login.tsx",
+  "src/features/auth/pages/Signup.tsx",
+  "src/features/landing/components/FeatureSection.tsx",
+  "src/features/landing/components/Footer.tsx",
+  "src/features/landing/components/Hero.tsx",
+  "src/features/landing/index.tsx",
+  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/pages/Dashboard.tsx",
+  "src/hooks/useAuth.tsx",
+  "src/index.css",
+  "src/main.tsx",
+  "src/router/index.tsx",
+  "src/router/routes.generated.tsx",
+  "src/test/setup.ts",
+  "tsconfig.app.json",
+  "tsconfig.json",
+  "tsconfig.node.json",
+  "vite.config.ts",
+  "vitest.config.ts",
+]
+`;
+
+exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from 'react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+import { HeroUIProvider } from '@heroui/react';
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <HeroUIProvider>
+        <RouterProvider router={router} />
+      </HeroUIProvider>
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "components.json",
+  "eslint.config.ts",
+  "index.html",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.tsx",
+  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/pages/Admin.tsx",
+  "src/features/auth/components/AdminRoute.tsx",
+  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/auth/pages/ForgotPassword.tsx",
+  "src/features/auth/pages/Login.tsx",
+  "src/features/auth/pages/Signup.tsx",
+  "src/features/landing/components/FeatureSection.tsx",
+  "src/features/landing/components/Footer.tsx",
+  "src/features/landing/components/Hero.tsx",
+  "src/features/landing/index.tsx",
+  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/pages/Dashboard.tsx",
+  "src/hooks/useAuth.tsx",
+  "src/index.css",
+  "src/main.tsx",
+  "src/router/index.tsx",
+  "src/router/routes.generated.tsx",
+  "src/test/setup.ts",
+  "tsconfig.app.json",
+  "tsconfig.json",
+  "tsconfig.node.json",
+  "vite.config.ts",
+  "vitest.config.ts",
+]
+`;
+
+exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from 'react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <RouterProvider router={router} />
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "eslint.config.ts",
+  "index.html",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.tsx",
+  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/pages/Admin.tsx",
+  "src/features/auth/components/AdminRoute.tsx",
+  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/auth/pages/ForgotPassword.tsx",
+  "src/features/auth/pages/Login.tsx",
+  "src/features/auth/pages/Signup.tsx",
+  "src/features/landing/components/FeatureSection.tsx",
+  "src/features/landing/components/Footer.tsx",
+  "src/features/landing/components/Hero.tsx",
+  "src/features/landing/index.tsx",
+  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/pages/Dashboard.tsx",
+  "src/hooks/useAuth.tsx",
+  "src/index.css",
+  "src/main.tsx",
+  "src/router/index.tsx",
+  "src/router/routes.generated.tsx",
+  "src/test/setup.ts",
+  "tsconfig.app.json",
+  "tsconfig.json",
+  "tsconfig.node.json",
+  "vite.config.ts",
+  "vitest.config.ts",
+]
+`;
+
+exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from '@tanstack/react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+import { HeroUIProvider } from '@heroui/react';
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <HeroUIProvider>
+        <RouterProvider router={router} />
+      </HeroUIProvider>
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > file-tree 1`] = `
+[
+  ".github/workflows/ci.yml",
+  ".gitignore",
+  "components.json",
+  "eslint.config.ts",
+  "index.html",
+  "package.json",
+  "prettier.config.js",
+  "src/context/AuthContext.tsx",
+  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/pages/Admin.tsx",
+  "src/features/auth/components/AdminRoute.tsx",
+  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/auth/pages/ForgotPassword.tsx",
+  "src/features/auth/pages/Login.tsx",
+  "src/features/auth/pages/Signup.tsx",
+  "src/features/landing/components/FeatureSection.tsx",
+  "src/features/landing/components/Footer.tsx",
+  "src/features/landing/components/Hero.tsx",
+  "src/features/landing/index.tsx",
+  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/pages/Dashboard.tsx",
+  "src/hooks/useAuth.tsx",
+  "src/index.css",
+  "src/main.tsx",
+  "src/router/index.tsx",
+  "src/router/routes.generated.tsx",
+  "src/test/setup.ts",
+  "tsconfig.app.json",
+  "tsconfig.json",
+  "tsconfig.node.json",
+  "vite.config.ts",
+  "vitest.config.ts",
+]
+`;
+
+exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > main 1`] = `
+"import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import '@/index.css';
+
+import { RouterProvider } from '@tanstack/react-router';
+
+import { router } from '@/router';
+import { AuthProvider } from '@/context/AuthContext';
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <AuthProvider>
+
+      <RouterProvider router={router} />
+
+    </AuthProvider>
+  </StrictMode>,
+);
+"
+`;
+
+exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > vite-config 1`] = `
+"import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
+});
+"
+`;

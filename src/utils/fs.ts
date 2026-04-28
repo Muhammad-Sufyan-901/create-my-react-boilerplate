@@ -1,5 +1,6 @@
 import { readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 /** True if the directory doesn't exist or is completely empty. */
@@ -9,9 +10,15 @@ export async function isDirEmpty(dir: string): Promise<boolean> {
   return entries.length === 0;
 }
 
-/** Resolve a path relative to the CLI package root (works after bundling). */
+/** Resolve a path relative to the CLI package root (works in source and after bundling). */
 export function pkgRoot(...segments: string[]): string {
-  // __dirname is unavailable in ESM; use import.meta.url
-  const root = new URL('../../', import.meta.url).pathname;
-  return path.join(root, ...segments);
+  // Walk up from the current file until we find package.json.
+  // This handles both dev (src/utils/fs.ts) and production (dist/index.mjs).
+  let dir = path.dirname(fileURLToPath(import.meta.url));
+  while (!existsSync(path.join(dir, 'package.json'))) {
+    const parent = path.dirname(dir);
+    if (parent === dir) throw new Error('pkgRoot: could not locate package.json');
+    dir = parent;
+  }
+  return path.join(dir, ...segments);
 }

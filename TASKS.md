@@ -67,11 +67,11 @@ Extracted from `PLANNING.md`. Check off each item as it is completed; update `CH
 
 ---
 
-## Phase F — Testing
+## Phase F — Testing ✅
 
-- [ ] Snapshot tests: scaffold all 8 permutations into tmp dirs, snapshot file trees + key file contents
-- [ ] E2E tests: spawn CLI → install → `<pm> build` → assert exit 0 (Node 20 + 22 matrix)
-- [ ] Unit tests: prompts flow, PM detection, manifest merging, dep resolver
+- [x] Snapshot tests: scaffold all 8 permutations into tmp dirs, snapshot file trees + key file contents
+- [x] E2E tests: spawn CLI → install → `<pm> build` → assert exit 0 (Node 20 + 22 matrix)
+- [x] Unit tests: prompts flow, PM detection, manifest merging, dep resolver
 
 ---
 

@@ -2,9 +2,28 @@
 
 ---
 
+## [Phase F] — Testing — 2026-04-29
+
+### Added
+
+- `tests/unit/pm.test.ts` — 6 tests for `detectPackageManager()`: null on missing env, correct PM for npm/yarn/pnpm/bun user agents, null for unknown agent.
+- `tests/unit/questions.test.ts` — 6 tests for the `questions` registry shape: each entry has `id`, `message`, `choices`, `defaultValue`; every choice has a non-empty `value` and `label`.
+- `tests/snapshot/permutations.test.ts` — 8 snapshot tests (one per permutation: ts/js × react-router/tanstack-router × shadcn/heroui); each asserts the sorted file tree, `src/main.[ext]`, and `vite.config.[sext]` against committed snapshots in `tests/snapshot/__snapshots__/`.
+- `tests/e2e/cli.test.ts` — 3 E2E tests that spawn `dist/index.mjs` with `--no-install --no-git --offline`; assert exit code 0 and presence of key files (`package.json`, `index.html`, `src/main.[ext]`, `vite.config.[sext]`). Skipped automatically when `dist/index.mjs` is absent.
+
+### Changed
+
+- `src/utils/fs.ts` — `pkgRoot` now walks up from the current file until it finds `package.json` (uses `fileURLToPath` to handle percent-encoded paths); previously used a hardcoded `../../` relative that broke when bundled into `dist/index.mjs`.
+- `vitest.config.ts` — added `testTimeout: 30_000` to accommodate snapshot and E2E tests.
+
+**91 tests passing (68 pre-existing + 6 pm + 6 questions + 8 snapshot + 3 E2E).**
+
+---
+
 ## [Phase E] — Post-scaffold Actions — 2026-04-29
 
 ### Added
+
 - `src/deps/resolve.ts` — `getBaseDeps(ctx)` builds the framework-level prod/dev dep list (react, react-dom, vite, tailwindcss, router, UI lib, testing, ESLint, Prettier, TypeScript tooling conditional on `isTS`). `resolveDeps` merges base + feature deps, deduplicates, then either hits `pacote.manifest` in parallel (online) or reads `versions.lock.json` (offline). `writeResolvedDeps` patches the generated `package.json` with resolved semver ranges.
 - `src/deps/versions.lock.json` — pinned versions for React 19, Vite 6, Tailwind v4, both routers, both UI libs, and all tooling.
 - `src/postinstall/git.ts` — runs `git init && git add . && git commit` in `ctx.targetDir`; no-ops when `ctx.git === false`.
@@ -13,6 +32,7 @@
 - `tests/unit/postinstall.test.ts` — 7 tests: `initGit` skip + execa call sequence, `runShadcnAdd` skip + `pmDlx` argument assertions.
 
 ### Changed
+
 - `src/index.ts` — replaced stub with full orchestrator: scaffold → dep resolve → install (optional) → shadcn add (optional) → git init (optional) → outro. Each step uses a `@clack/prompts` spinner; failures are caught individually so one non-critical step (shadcn add, git) doesn't abort the whole run.
 - `templates/base/vite.config.[sext].ejs` — added `@tailwindcss/vite` plugin (required for Tailwind v4 + Vite).
 - `templates/base/src/main.[ext].ejs` — wraps `<RouterProvider>` in `<AuthProvider>` so auth context is available app-wide.
@@ -22,6 +42,7 @@
 ## [Phase D] — Build the Templates — 2026-04-29
 
 ### Added
+
 - `src/scaffold/render.ts` — added `[sext]` placeholder (`ts`|`js`) for config-file names; 2 new tests.
 - `templates/base/` — `index.html.ejs`, `package.json.ejs` (scripts branch on `isTS`), `vite.config.[sext].ejs` (path alias `@/*`), `.gitignore`, `src/index.css` (`@import "tailwindcss"`), `src/main.[ext].ejs` (EJS branches on `router` + `ui` for all 4 combos).
 - `templates/lang/ts/` — `tsconfig.json`, `tsconfig.app.json` (bundler resolution, `@/*` alias), `tsconfig.node.json`.
@@ -46,6 +67,7 @@
 ## [Phase C] — Templating Engine — 2026-04-28
 
 ### Added
+
 - `src/scaffold/render.ts` — `renderLayer(srcDir, targetDir, ctx)` walks a template layer directory; `.ejs` files are rendered via EJS and the suffix stripped, other files are copied as-is; filenames and directory names are interpolated (`[ext]`, `__router__`, `__ui__`, `__lang__`). Exported `interpolateFilename` for testing.
 - `src/scaffold/inject.ts` — `injectFragments(targetDir, ctx, templatesDir?)` walks the rendered output tree and replaces `/* @inject:<tag> */` markers with the content of matching fragment files; looks in `router/{router}/fragments/` then `ui/{ui}/fragments/`; leaves unresolvable markers intact. Exported `resolveFragment` for testing.
 - `src/scaffold/manifest.ts` — `loadManifest(featureDir)` parses `feature.json`; `mergeManifests(manifests, ctx)` deduplicates and filters deps by UI + language; `emitRoutes(manifests, ctx)` writes `src/router/routes.generated.[ext]` aggregating all feature routes and navItems.
@@ -63,6 +85,7 @@ All notable changes to this project are documented here. Each entry corresponds 
 ## [Phase B] — CLI Skeleton — 2026-04-28
 
 ### Added
+
 - `src/index.ts` — `commander` entry point; parses `<project-name>` argument and all CLI flags (`--ts`, `--js`, `--router`, `--ui`, `--pm`, `--no-install`, `--no-git`, `--offline`)
 - `src/prompts/index.ts` — `runPrompts()` orchestrates the full `@clack/prompts` interactive flow; handles project-name validation, target-dir conflict detection, and variant selection
 - `src/prompts/questions.ts` — declarative question registry (`language`, `router`, `ui`, `packageManager`); adding a new prompt requires only a new entry here
@@ -74,6 +97,7 @@ All notable changes to this project are documented here. Each entry corresponds 
 - `src/types.ts` — `ScaffoldContext`, `FeatureManifest`, `RouteDefinition`, `NavItem`, `FeatureDependencies`, `ComposedDeps`, `Question` types
 
 ### Fixed
+
 - Threaded `offline` flag through `CliFlags` → `runPrompts` return → `ScaffoldContext`
 - Fixed `@clack/prompts` type errors: `validate` callback now guards `string | undefined` with `?? ''`; `options` array cast to `Option<T>[]` to satisfy deferred conditional type
 
@@ -82,6 +106,7 @@ All notable changes to this project are documented here. Each entry corresponds 
 ## [Phase A] — Bootstrap — 2026-04-28
 
 ### Added
+
 - `package.json` — `name`, `bin`, `type: module`, `engines.node >= 20`, all runtime and dev dependencies
 - `tsconfig.json` — `Node16` module resolution, `strict`, `ES2022` target
 - `tsup.config.ts` — single ESM output (`dist/index.mjs`), shebang banner, all `node_modules` external
@@ -94,6 +119,7 @@ All notable changes to this project are documented here. Each entry corresponds 
 ## [Chore] — Project Tracking — 2026-04-28
 
 ### Added
+
 - `.gitignore` — excludes `node_modules/`, `dist/`, `coverage/`, logs, `.env`, OS/editor artifacts, `.claude/`, `.agents/`
 - `TASKS.md` — full phase-by-phase checklist extracted from `PLANNING.md`
 - `CHANGELOG.md` — this file
