@@ -2,6 +2,23 @@
 
 ---
 
+## [Phase G] — Polish & Publish — 2026-04-29
+
+### Added
+- `.github/workflows/ci.yml` — PR/push CI matrix on Node 20 + 22: `npm ci → build → test`.
+- `.github/workflows/publish.yml` — Auto-publish to npm on `v*` tags via `NPM_TOKEN` secret.
+- `README.md` — Troubleshooting section (shadcn failure, git init failure, Node version, registry propagation).
+
+### Changed
+- `package.json` — `files` array changed from `"dist"` to `"dist/index.mjs"` to exclude the sourcemap; package shrinks from 31.5 kB → 18.9 kB (43 files).
+- `README.md` — Removed inaccurate `tailwind.config.ts` entry (Tailwind v4 is CSS-first), fixed `PRD.md` dead link, updated `git clone` URL.
+
+### Pending (requires npm credentials)
+- `npm publish --access public`
+- Post-publish `npx` smoke test on a clean machine
+
+---
+
 ## [Phase F] — Testing — 2026-04-29
 
 ### Added

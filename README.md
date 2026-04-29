@@ -104,7 +104,6 @@ my-app/
 ├── public/
 ├── index.html
 ├── vite.config.ts
-├── tailwind.config.ts        # HeroUI only; shadcn uses CSS vars
 ├── tsconfig.json             # TypeScript only
 ├── eslint.config.js
 ├── prettier.config.js
@@ -121,6 +120,28 @@ my-app/
 
 ---
 
+## Troubleshooting
+
+**`Error: ENOENT: no such file or directory, … dist/index.mjs`**
+Run `npm run build` first. The compiled CLI must exist before running local tests or `npm link`.
+
+**`shadcn/ui components add` failed**
+The CLI catches this and prints the manual command. Run it yourself inside the generated project:
+```bash
+npx shadcn@latest add button card input label badge separator
+```
+
+**`git init` failed**
+Pass `--no-git` to skip it, then `git init && git add . && git commit -m "init"` manually once the project is ready.
+
+**Node version error**
+`create-my-react-boilerplate` requires **Node ≥ 20**. Check with `node -v` and upgrade via [nvm](https://github.com/nvm-sh/nvm) or [fnm](https://github.com/Schniz/fnm) if needed.
+
+**Package not found on npm after publishing**
+Registry propagation can take a few minutes. Wait and retry `npx create-my-react-boilerplate@latest my-app`.
+
+---
+
 ## Adding new variants (for contributors)
 
 The CLI uses a **Base + Layered Overlays + Feature Manifest** model — no static permutation folders. Adding a new prompt (e.g. state management) requires:
@@ -131,7 +152,7 @@ The CLI uses a **Base + Layered Overlays + Feature Manifest** model — no stati
 
 No changes to the scaffolder core are needed.
 
-See [PLANNING.md](PLANNING.md) for the full architecture and [PRD.md](PRD.md) for the product spec.
+See [PLANNING.md](PLANNING.md) for the full architecture.
 
 ---
 
@@ -139,7 +160,7 @@ See [PLANNING.md](PLANNING.md) for the full architecture and [PRD.md](PRD.md) fo
 
 ```bash
 # clone and bootstrap
-git clone https://github.com/your-handle/create-my-react-boilerplate
+git clone https://github.com/muhammadsufyan/create-my-react-boilerplate
 cd create-my-react-boilerplate
 npm install
 

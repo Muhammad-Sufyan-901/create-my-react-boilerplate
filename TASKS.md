@@ -77,8 +77,8 @@ Extracted from `PLANNING.md`. Check off each item as it is completed; update `CH
 
 ## Phase G — Polish & Publish
 
-- [ ] README — GIF demo, full flag reference, troubleshooting section
-- [ ] `npm pack` dry-run smoke test
-- [ ] `npm publish --access public`
-- [ ] GitHub Actions: PR test matrix, auto-publish on version tag
-- [ ] Verify `npx create-my-react-boilerplate test-app` works end-to-end from a clean machine
+- [x] README — full flag reference + troubleshooting section added; GIF demo is a post-publish manual step
+- [x] `npm pack` dry-run smoke test — 43 files, 18.9 kB (sourcemap excluded via `files` field)
+- [ ] `npm publish --access public` — **requires npm credentials; run manually:** `npm publish --access public`
+- [x] GitHub Actions: PR test matrix (Node 20+22) in `.github/workflows/ci.yml`; auto-publish on `v*` tag in `.github/workflows/publish.yml` (uses `NPM_TOKEN` secret)
+- [ ] Verify `npx create-my-react-boilerplate test-app` works end-to-end — **run after publishing**
