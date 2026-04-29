@@ -35,7 +35,7 @@
     "tanstack-router",
     "scaffold"
   ],
-  "author": "",
+  "author": "Bocchi The Coder muhammadsufyann09@gmail.com https://github.com/Muhammad-Sufyan-901",
   "license": "MIT",
   "dependencies": {
     "@clack/prompts": "^1.2.0",
