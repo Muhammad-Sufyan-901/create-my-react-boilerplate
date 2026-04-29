@@ -1,0 +1,7 @@
+<% if (isTS) { %>import { type ClassValue, clsx } from 'clsx';
+<% } else { %>import { clsx } from 'clsx';
+<% } %>import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs<% if (isTS) { %>: ClassValue[]<% } %>) {
+  return twMerge(clsx(inputs));
+}

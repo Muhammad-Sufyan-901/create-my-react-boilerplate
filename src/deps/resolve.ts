@@ -22,6 +22,10 @@ export function getBaseDeps(ctx: ScaffoldContext): ComposedDeps {
     prod.push('@heroui/react', 'framer-motion');
   }
 
+  if (ctx.ui === 'shadcn') {
+    prod.push('clsx', 'tailwind-merge', '@radix-ui/react-slot');
+  }
+
   const dev: string[] = [
     'vite',
     '@vitejs/plugin-react',

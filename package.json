@@ -1,6 +1,6 @@
 {
   "name": "create-my-react-boilerplate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scaffold a modern React app with Landing, Auth, User Dashboard, and Admin Dashboard — choose your language, router, and UI library.",
   "type": "module",
   "main": "dist/index.mjs",
