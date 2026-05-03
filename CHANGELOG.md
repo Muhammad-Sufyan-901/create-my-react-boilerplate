@@ -2,6 +2,56 @@
 
 ---
 
+## [0.1.2] — HeroUI v3 & TypeScript 6 compatibility — 2026-05-03
+
+### Fixed
+
+- **HeroUI v3 upgrade** — replaced `@heroui/react ^2.7.8` + `@heroui/theme` with `@heroui/react ^3.0.3` + `@heroui/styles ^3.0.3`; dropped `framer-motion` (no longer a peer dep in v3).
+- **CSS** — `templates/ui/heroui/src/index.css`: replaced `@plugin "@heroui/theme" { … }` (incompatible with Tailwind v4) with `@import "@heroui/styles"` (v3 CSS-first approach).
+- **Provider** — removed `HeroUIProvider` from `templates/base/src/main.[ext].ejs`; v3 no longer requires an app-level provider.
+- **Card API** — updated all HeroUI auth/dashboard templates to use the v3 compound component pattern (`Card.Header`, `Card.Content`, `Card.Footer`, `Card.Title`, `Card.Description`) instead of the removed `CardHeader`/`CardBody`/`CardFooter` named exports.
+- **Input API** — replaced `<Input label onValueChange isRequired>` (v2) with native `<label>` + `<input onChange>` elements in Login, Signup, and ForgotPassword templates; v3 `Input` is a low-level primitive that no longer accepts those props.
+- **Button API** — replaced `color="primary"` with `variant="primary"`, `variant="bordered"` with `variant="outline"`, `isLoading` with `isDisabled`, and `as={Link}` with `onPress` + `useNavigate` across all HeroUI template branches.
+- **TypeScript 6** — removed deprecated `baseUrl` option from `templates/lang/ts/tsconfig.app.json` (TS 6 treats it as an error; `paths` no longer requires it).
+- **TS2882 CSS import error** — added `templates/lang/ts/src/vite-env.d.ts` (`/// <reference types="vite/client" />`); silences TypeScript 6's `noUncheckedSideEffectImports` error on `import '@/index.css'`.
+- **Lock file** — updated `versions.lock.json` to pin `typescript ^6.0.3`, `@heroui/react ^3.0.3`, `@heroui/styles ^3.0.3`; removed `@heroui/theme` and `framer-motion`.
+
+### Changed
+
+- `src/deps/resolve.ts` — heroui prod deps: `['@heroui/react', '@heroui/theme', 'framer-motion']` → `['@heroui/react', '@heroui/styles']`.
+- `tests/unit/resolve.test.ts` — updated heroui dep assertions to match v3 package set.
+- `tests/snapshot/__snapshots__/permutations.test.ts.snap` — 24 snapshots regenerated to reflect template changes.
+
+---
+
+## [0.1.1] — shadcn/ui component bundling & CI improvements — 2026-04-29
+
+### Fixed
+
+- **shadcn runtime import error** — generated shadcn projects failed at runtime with `Failed to resolve import @/components/ui/button`. Root cause: templates imported shadcn components that didn't exist because `runShadcnAdd` postinstall is skipped with `--no-install`. Fix: bundled 7 EJS template files directly into `templates/ui/shadcn/src/`:
+  - `src/lib/utils.[ext].ejs` (`cn` utility)
+  - `src/components/ui/button.[ext].ejs`
+  - `src/components/ui/card.[ext].ejs`
+  - `src/components/ui/input.[ext].ejs`
+  - `src/components/ui/label.[ext].ejs`
+  - `src/components/ui/badge.[ext].ejs`
+  - `src/components/ui/separator.[ext].ejs`
+- Added `clsx`, `tailwind-merge`, `@radix-ui/react-slot` to shadcn prod deps and `versions.lock.json`.
+- `runShadcnAdd` is retained — if it succeeds it upgrades components to official shadcn versions; if it fails the bundled versions work as a fallback.
+
+### Changed
+
+- `package.json` — bumped version to `0.1.1`.
+- `.github/workflows/publish.yml` — switched from `NPM_TOKEN` secret to npm Trusted Publishing (OIDC); added `--provenance` flag to link the published package to its GitHub source. No `NPM_TOKEN` secret required going forward.
+- `package.json` — added `author` field.
+- `tests/snapshot/__snapshots__/permutations.test.ts.snap` — 4 shadcn permutation snapshots updated to include new bundled component files.
+
+### Added
+
+- `PUBLISH.md` — step-by-step guide for npm publishing (first manual publish, Trusted Publisher setup, and automated tag-based releases).
+
+---
+
 ## [Phase G] — Polish & Publish — 2026-04-29
 
 ### Added
