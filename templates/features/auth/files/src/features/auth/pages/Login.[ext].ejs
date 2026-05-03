@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 <% } else { %>
-import { Button, Input, Card, CardHeader, CardBody, CardFooter } from '@heroui/react';
+import { Button, Card } from '@heroui/react';
 <% } %>
 import { useAuth } from '@/hooks/useAuth';
 
@@ -75,29 +75,50 @@ export default function Login() {
         </form>
       </Card>
 <% } else { %>
-      <Card className="w-full max-w-md p-2">
-        <CardHeader className="flex flex-col gap-1 pb-0">
-          <h1 className="text-2xl font-bold">Sign in</h1>
-          <p className="text-small text-default-500">Enter your credentials to access your account.</p>
-        </CardHeader>
+      <Card className="w-full max-w-md">
+        <Card.Header>
+          <Card.Title className="text-2xl">Sign in</Card.Title>
+          <Card.Description>Enter your credentials to access your account.</Card.Description>
+        </Card.Header>
         <form onSubmit={handleSubmit}>
-          <CardBody className="flex flex-col gap-4">
-            {error && <p className="text-sm text-danger">{error}</p>}
-            <Input label="Email" type="email" placeholder="you@example.com" value={email} onValueChange={setEmail} isRequired />
-            <Input label="Password" type="password" value={password} onValueChange={setPassword} isRequired />
-          </CardBody>
-          <CardFooter className="flex flex-col gap-3">
-            <Button type="submit" color="primary" className="w-full" isLoading={isPending}>
-              Sign in
+          <Card.Content className="flex flex-col gap-4 pt-2">
+            {error && <p className="text-sm text-red-500">{error}</p>}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium" htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                placeholder="you@example.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium" htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </Card.Content>
+          <Card.Footer className="flex flex-col gap-3">
+            <Button type="submit" variant="primary" className="w-full" isDisabled={isPending}>
+              {isPending ? 'Signing in…' : 'Sign in'}
             </Button>
-            <p className="text-center text-small text-default-500">
+            <p className="text-center text-sm text-zinc-500">
               No account?{' '}
               <Link to="/signup" className="underline">Sign up</Link>
             </p>
-            <Link to="/forgot-password" className="text-center text-small text-default-500 underline">
+            <Link to="/forgot-password" className="text-center text-sm text-zinc-500 underline">
               Forgot password?
             </Link>
-          </CardFooter>
+          </Card.Footer>
         </form>
       </Card>
 <% } %>

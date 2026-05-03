@@ -8,20 +8,11 @@ import { RouterProvider } from '@tanstack/react-router';
 <% } %>
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
-<% if (ui === 'heroui') { %>
-import { HeroUIProvider } from '@heroui/react';
-<% } %>
 
 createRoot(document.getElementById('root')<% if (isTS) { %>!<% } %>).render(
   <StrictMode>
     <AuthProvider>
-<% if (ui === 'heroui') { %>
-      <HeroUIProvider>
-        <RouterProvider router={router} />
-      </HeroUIProvider>
-<% } else { %>
       <RouterProvider router={router} />
-<% } %>
     </AuthProvider>
   </StrictMode>,
 );

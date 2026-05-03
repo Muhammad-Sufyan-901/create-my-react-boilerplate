@@ -46,17 +46,10 @@ import { RouterProvider } from 'react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-import { HeroUIProvider } from '@heroui/react';
-
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-
-      <HeroUIProvider>
-        <RouterProvider router={router} />
-      </HeroUIProvider>
-
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 );
@@ -135,13 +128,10 @@ import { RouterProvider } from 'react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-
       <RouterProvider router={router} />
-
     </AuthProvider>
   </StrictMode>,
 );
@@ -212,17 +202,10 @@ import { RouterProvider } from '@tanstack/react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-import { HeroUIProvider } from '@heroui/react';
-
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-
-      <HeroUIProvider>
-        <RouterProvider router={router} />
-      </HeroUIProvider>
-
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 );
@@ -301,13 +284,10 @@ import { RouterProvider } from '@tanstack/react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
-
       <RouterProvider router={router} />
-
     </AuthProvider>
   </StrictMode>,
 );
@@ -362,6 +342,7 @@ exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > file-tree 1`] = 
   "src/router/index.tsx",
   "src/router/routes.generated.tsx",
   "src/test/setup.ts",
+  "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
   "tsconfig.node.json",
@@ -380,17 +361,10 @@ import { RouterProvider } from 'react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-import { HeroUIProvider } from '@heroui/react';
-
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-
-      <HeroUIProvider>
-        <RouterProvider router={router} />
-      </HeroUIProvider>
-
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 );
@@ -453,6 +427,7 @@ exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > file-tree 1`] = 
   "src/router/index.tsx",
   "src/router/routes.generated.tsx",
   "src/test/setup.ts",
+  "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
   "tsconfig.node.json",
@@ -471,13 +446,10 @@ import { RouterProvider } from 'react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-
       <RouterProvider router={router} />
-
     </AuthProvider>
   </StrictMode>,
 );
@@ -532,6 +504,7 @@ exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > file-tree 1`]
   "src/router/index.tsx",
   "src/router/routes.generated.tsx",
   "src/test/setup.ts",
+  "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
   "tsconfig.node.json",
@@ -550,17 +523,10 @@ import { RouterProvider } from '@tanstack/react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-import { HeroUIProvider } from '@heroui/react';
-
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-
-      <HeroUIProvider>
-        <RouterProvider router={router} />
-      </HeroUIProvider>
-
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 );
@@ -623,6 +589,7 @@ exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > file-tree 1`]
   "src/router/index.tsx",
   "src/router/routes.generated.tsx",
   "src/test/setup.ts",
+  "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
   "tsconfig.node.json",
@@ -641,13 +608,10 @@ import { RouterProvider } from '@tanstack/react-router';
 import { router } from '@/router';
 import { AuthProvider } from '@/context/AuthContext';
 
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-
       <RouterProvider router={router} />
-
     </AuthProvider>
   </StrictMode>,
 );

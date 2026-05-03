@@ -51,11 +51,13 @@ describe('getBaseDeps', () => {
     expect(prod).not.toContain('react-router');
   });
 
-  it('includes @heroui/react and framer-motion for heroui', () => {
+  it('includes @heroui/react and @heroui/styles for heroui', () => {
     const ctx = { ...BASE_CTX, ui: 'heroui' as const };
     const { prod } = getBaseDeps(ctx);
     expect(prod).toContain('@heroui/react');
-    expect(prod).toContain('framer-motion');
+    expect(prod).toContain('@heroui/styles');
+    expect(prod).not.toContain('@heroui/theme');
+    expect(prod).not.toContain('framer-motion');
   });
 
   it('does not include @heroui/react for shadcn', () => {

@@ -19,7 +19,7 @@ export function getBaseDeps(ctx: ScaffoldContext): ComposedDeps {
   ];
 
   if (ctx.ui === 'heroui') {
-    prod.push('@heroui/react', 'framer-motion');
+    prod.push('@heroui/react', '@heroui/styles');
   }
 
   if (ctx.ui === 'shadcn') {
