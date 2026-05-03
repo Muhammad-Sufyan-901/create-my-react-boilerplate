@@ -1,0 +1,28 @@
+<% if (isTS) { %>
+export interface ApiResponse<T> {
+  data: T;
+  message: string;
+  success: boolean;
+}
+
+export interface ApiError {
+  message: string;
+  statusCode: number;
+  errors?: Record<string, string[]>;
+}
+<% } else { %>
+/**
+ * @template T
+ * @typedef {Object} ApiResponse
+ * @property {T} data
+ * @property {string} message
+ * @property {boolean} success
+ */
+
+/**
+ * @typedef {Object} ApiError
+ * @property {string} message
+ * @property {number} statusCode
+ * @property {Record<string, string[]>} [errors]
+ */
+<% } %>

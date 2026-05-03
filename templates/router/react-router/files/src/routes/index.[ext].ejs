@@ -1,0 +1,26 @@
+import { createBrowserRouter } from 'react-router';
+import { RootLayout } from '@/components/layouts/RootLayout';
+import { NotFound } from '@/components/common/NotFound';
+import { authMiddleware } from '@/middlewares/authMiddleware';
+import { guestMiddleware } from '@/middlewares/guestMiddleware';
+import Home from '@/features/home/pages/Home';
+import Login from '@/features/auth/pages/Login';
+import Signup from '@/features/auth/pages/Signup';
+import ForgotPassword from '@/features/auth/pages/ForgotPassword';
+import Dashboard from '@/features/user-dashboard/pages/Dashboard';
+import Admin from '@/features/admin-dashboard/pages/Admin';
+
+export const router = createBrowserRouter([
+  {
+    element: <RootLayout />,
+    errorElement: <NotFound />,
+    children: [
+      { path: '/', element: <Home /> },
+      { path: '/login', loader: guestMiddleware, element: <Login /> },
+      { path: '/signup', loader: guestMiddleware, element: <Signup /> },
+      { path: '/forgot-password', element: <ForgotPassword /> },
+      { path: '/dashboard', loader: authMiddleware, element: <Dashboard /> },
+      { path: '/admin', loader: authMiddleware, element: <Admin /> },
+    ],
+  },
+]);

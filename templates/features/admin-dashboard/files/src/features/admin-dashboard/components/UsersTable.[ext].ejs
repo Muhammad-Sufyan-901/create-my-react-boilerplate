@@ -1,20 +1,12 @@
-<% if (isTS) { %>
-interface UserRow {
-  id: string;
-  name: string;
-  email: string;
-  role: 'user' | 'admin';
-  joined: string;
-}
-
-<% } %>
-const MOCK_USERS<% if (isTS) { %>: UserRow[]<% } %> = [
-  { id: '1', name: 'Alice Johnson', email: 'alice@example.com', role: 'admin', joined: '2024-01-10' },
-  { id: '2', name: 'Bob Smith',     email: 'bob@example.com',   role: 'user',  joined: '2024-02-14' },
-  { id: '3', name: 'Carol White',   email: 'carol@example.com', role: 'user',  joined: '2024-03-05' },
-];
+import { useUsersQuery } from '@/features/admin-dashboard/hooks/useUsersQuery';
 
 export default function UsersTable() {
+  const { data: users = [], isLoading } = useUsersQuery();
+
+  if (isLoading) {
+    return <p className="text-sm text-muted-foreground">Loading users…</p>;
+  }
+
   return (
     <div className="overflow-x-auto rounded-lg border">
       <table className="w-full text-sm">
@@ -26,8 +18,8 @@ export default function UsersTable() {
           </tr>
         </thead>
         <tbody className="divide-y">
-          {MOCK_USERS.map(u => (
-            <tr key={u.id} className="bg-card hover:bg-muted/30 transition-colors">
+          {users.map(u => (
+            <tr key={u.id} className="bg-card transition-colors hover:bg-muted/30">
               <td className="px-4 py-3 font-medium">{u.name}</td>
               <td className="px-4 py-3 text-muted-foreground">{u.email}</td>
               <td className="px-4 py-3">

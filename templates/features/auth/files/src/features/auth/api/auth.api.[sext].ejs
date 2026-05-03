@@ -1,0 +1,56 @@
+<% if (isTS) { %>
+import type { User } from '@/models/user.model';
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+export async function loginApi(email: string, _password: string): Promise<AuthResponse> {
+  await new Promise(r => setTimeout(r, 600));
+  if (email === 'demo@example.com') {
+    throw new Error('Invalid credentials');
+  }
+  return {
+    user: { id: '1', name: 'Demo User', email, role: 'user', createdAt: new Date().toISOString() },
+    token: 'mock-token-' + Date.now(),
+  };
+}
+
+export async function signupApi(name: string, email: string, _password: string): Promise<AuthResponse> {
+  await new Promise(r => setTimeout(r, 600));
+  return {
+    user: { id: Date.now().toString(), name, email, role: 'user', createdAt: new Date().toISOString() },
+    token: 'mock-token-' + Date.now(),
+  };
+}
+
+export async function forgotPasswordApi(email: string): Promise<void> {
+  await new Promise(r => setTimeout(r, 600));
+  console.log(`Password reset link sent to ${email}`);
+}
+<% } else { %>
+export async function loginApi(email, _password) {
+  await new Promise(r => setTimeout(r, 600));
+  if (email === 'demo@example.com') {
+    throw new Error('Invalid credentials');
+  }
+  return {
+    user: { id: '1', name: 'Demo User', email, role: 'user', createdAt: new Date().toISOString() },
+    token: 'mock-token-' + Date.now(),
+  };
+}
+
+export async function signupApi(name, email, _password) {
+  await new Promise(r => setTimeout(r, 600));
+  return {
+    user: { id: Date.now().toString(), name, email, role: 'user', createdAt: new Date().toISOString() },
+    token: 'mock-token-' + Date.now(),
+  };
+}
+
+export async function forgotPasswordApi(email) {
+  await new Promise(r => setTimeout(r, 600));
+  console.log(`Password reset link sent to ${email}`);
+}
+<% } %>

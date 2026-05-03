@@ -1,0 +1,18 @@
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+<% if (isTS) { %>
+import type { ReactNode } from 'react';
+
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
+<% } else { %>
+export function ThemeProvider({ children }) {
+<% } %>
+  return (
+    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+      {children}
+    </NextThemesProvider>
+  );
+}

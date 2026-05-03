@@ -138,14 +138,14 @@ describe('emitRoutes', () => {
   it('writes routes.generated.tsx for TS context', async () => {
     const ctx = { ...TS_CTX, targetDir: tmpDir };
     await emitRoutes([SAMPLE_MANIFEST], ctx);
-    const outPath = path.join(tmpDir, 'src', 'router', 'routes.generated.tsx');
+    const outPath = path.join(tmpDir, 'src', 'routes', 'routes.generated.tsx');
     expect(await fs.pathExists(outPath)).toBe(true);
   });
 
   it('writes routes.generated.jsx for JS context', async () => {
     const ctx = { ...JS_CTX, targetDir: tmpDir };
     await emitRoutes([SAMPLE_MANIFEST], ctx);
-    const outPath = path.join(tmpDir, 'src', 'router', 'routes.generated.jsx');
+    const outPath = path.join(tmpDir, 'src', 'routes', 'routes.generated.jsx');
     expect(await fs.pathExists(outPath)).toBe(true);
   });
 
@@ -160,7 +160,7 @@ describe('emitRoutes', () => {
     };
     await emitRoutes([SAMPLE_MANIFEST, second], ctx);
     const content = await fs.readFile(
-      path.join(tmpDir, 'src', 'router', 'routes.generated.tsx'),
+      path.join(tmpDir, 'src', 'routes', 'routes.generated.tsx'),
       'utf8',
     );
     expect(content).toContain('/login');
@@ -172,7 +172,7 @@ describe('emitRoutes', () => {
     const ctx = { ...TS_CTX, targetDir: tmpDir };
     await emitRoutes([SAMPLE_MANIFEST], ctx);
     const content = await fs.readFile(
-      path.join(tmpDir, 'src', 'router', 'routes.generated.tsx'),
+      path.join(tmpDir, 'src', 'routes', 'routes.generated.tsx'),
       'utf8',
     );
     expect(content).toContain('"guard": "auth"');
@@ -182,7 +182,7 @@ describe('emitRoutes', () => {
     const ctx = { ...TS_CTX, targetDir: tmpDir };
     await emitRoutes([SAMPLE_MANIFEST], ctx);
     const content = await fs.readFile(
-      path.join(tmpDir, 'src', 'router', 'routes.generated.tsx'),
+      path.join(tmpDir, 'src', 'routes', 'routes.generated.tsx'),
       'utf8',
     );
     expect(content).toContain('navItems');

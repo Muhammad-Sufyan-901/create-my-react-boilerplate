@@ -1,0 +1,14 @@
+<% if (isTS) { %>
+export interface StatCard {
+  label: string;
+  value: string;
+}
+
+export const DASHBOARD_STATS: StatCard[] = [
+<% } else { %>
+export const DASHBOARD_STATS = [
+<% } %>
+  { label: 'Total projects', value: '12' },
+  { label: 'Active tasks', value: '4' },
+  { label: 'Team members', value: '7' },
+];

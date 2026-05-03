@@ -16,6 +16,13 @@ export function getBaseDeps(ctx: ScaffoldContext): ComposedDeps {
     'react',
     'react-dom',
     ctx.router === 'react-router' ? 'react-router' : '@tanstack/react-router',
+    // Universal utilities — all variants
+    'clsx',
+    'tailwind-merge',
+    'zustand',
+    'axios',
+    '@tanstack/react-query',
+    'next-themes',
   ];
 
   if (ctx.ui === 'heroui') {
@@ -23,7 +30,7 @@ export function getBaseDeps(ctx: ScaffoldContext): ComposedDeps {
   }
 
   if (ctx.ui === 'shadcn') {
-    prod.push('clsx', 'tailwind-merge', '@radix-ui/react-slot');
+    prod.push('@radix-ui/react-slot');
   }
 
   const dev: string[] = [

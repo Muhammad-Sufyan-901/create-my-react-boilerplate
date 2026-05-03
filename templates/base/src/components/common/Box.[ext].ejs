@@ -1,0 +1,12 @@
+import { cn } from '@/lib/utils';
+<% if (isTS) { %>
+import type { HTMLAttributes } from 'react';
+
+interface BoxProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function Box({ className, ...props }: BoxProps) {
+<% } else { %>
+export function Box({ className, ...props }) {
+<% } %>
+  return <div className={cn(className)} {...props} />;
+}

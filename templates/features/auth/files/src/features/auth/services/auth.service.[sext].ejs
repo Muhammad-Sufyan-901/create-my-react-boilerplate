@@ -1,0 +1,27 @@
+import { useAuthStore } from '@/store/useAuthStore';
+import { loginApi, signupApi, forgotPasswordApi } from '@/features/auth/api/auth.api';
+<% if (isTS) { %>
+import type { LoginFormData, SignupFormData, ForgotPasswordFormData } from '@/features/auth/types/auth.type';
+<% } %>
+
+export const authService = {
+  async login(data<% if (isTS) { %>: LoginFormData<% } %>) {
+    const result = await loginApi(data.email, data.password);
+    useAuthStore.getState().login(result.user, result.token);
+    return result;
+  },
+
+  async signup(data<% if (isTS) { %>: SignupFormData<% } %>) {
+    const result = await signupApi(data.name, data.email, data.password);
+    useAuthStore.getState().signup(result.user, result.token);
+    return result;
+  },
+
+  async forgotPassword(data<% if (isTS) { %>: ForgotPasswordFormData<% } %>) {
+    await forgotPasswordApi(data.email);
+  },
+
+  logout() {
+    useAuthStore.getState().logout();
+  },
+};

@@ -9,28 +9,68 @@ exports[`scaffold permutations > 'js'-'react-router'-'heroui' > file-tree 1`] = 
   "jsconfig.json",
   "package.json",
   "prettier.config.js",
-  "src/context/AuthContext.jsx",
-  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.jsx",
+  "src/components/common/Container.jsx",
+  "src/components/common/Heading.jsx",
+  "src/components/common/Image.jsx",
+  "src/components/common/Link.jsx",
+  "src/components/common/NotFound.jsx",
+  "src/components/common/Text.jsx",
+  "src/components/common/ThemeToggle.jsx",
+  "src/components/layouts/RootLayout.jsx",
+  "src/config/env.jsx",
+  "src/constants/index.jsx",
+  "src/features/admin-dashboard/api/getUsers.js",
   "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/data/users.js",
+  "src/features/admin-dashboard/hooks/useUsersQuery.js",
+  "src/features/admin-dashboard/index.js",
+  "src/features/admin-dashboard/layouts/AdminLayout.jsx",
   "src/features/admin-dashboard/pages/Admin.jsx",
-  "src/features/auth/components/AdminRoute.jsx",
-  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/admin-dashboard/types/user.type.js",
+  "src/features/auth/api/auth.api.js",
+  "src/features/auth/hooks/useForgotPasswordMutation.js",
+  "src/features/auth/hooks/useLoginMutation.js",
+  "src/features/auth/hooks/useSignupMutation.js",
+  "src/features/auth/index.js",
+  "src/features/auth/layouts/AuthLayout.jsx",
   "src/features/auth/pages/ForgotPassword.jsx",
   "src/features/auth/pages/Login.jsx",
   "src/features/auth/pages/Signup.jsx",
-  "src/features/landing/components/FeatureSection.jsx",
-  "src/features/landing/components/Footer.jsx",
-  "src/features/landing/components/Hero.jsx",
-  "src/features/landing/index.jsx",
-  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/auth/schemas/forgotPassword.schema.js",
+  "src/features/auth/schemas/login.schema.js",
+  "src/features/auth/schemas/signup.schema.js",
+  "src/features/auth/services/auth.service.js",
+  "src/features/auth/types/auth.type.js",
+  "src/features/home/components/FeatureSection.jsx",
+  "src/features/home/components/Footer.jsx",
+  "src/features/home/components/Hero.jsx",
+  "src/features/home/data/features.js",
+  "src/features/home/index.js",
+  "src/features/home/pages/Home.jsx",
   "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/data/stats.js",
+  "src/features/user-dashboard/index.js",
+  "src/features/user-dashboard/layouts/DashboardLayout.jsx",
   "src/features/user-dashboard/pages/Dashboard.jsx",
-  "src/hooks/useAuth.jsx",
+  "src/hooks/useMobile.jsx",
+  "src/hooks/useTheme.jsx",
   "src/index.css",
+  "src/lib/axios.jsx",
+  "src/lib/utils.jsx",
   "src/main.jsx",
-  "src/router/index.jsx",
-  "src/router/routes.generated.jsx",
+  "src/middlewares/authMiddleware.jsx",
+  "src/middlewares/guestMiddleware.jsx",
+  "src/models/user.model.jsx",
+  "src/providers/theme-provider.jsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.jsx",
+  "src/routes/routes.generated.jsx",
+  "src/store/useAuthStore.jsx",
   "src/test/setup.js",
+  "src/types/api.type.jsx",
+  "src/types/models/.gitkeep",
   "vite.config.js",
   "vitest.config.js",
 ]
@@ -39,18 +79,23 @@ exports[`scaffold permutations > 'js'-'react-router'-'heroui' > file-tree 1`] = 
 exports[`scaffold permutations > 'js'-'react-router'-'heroui' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from 'react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -68,7 +113,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    globals: true,
   },
 });
 "
@@ -84,35 +149,74 @@ exports[`scaffold permutations > 'js'-'react-router'-'shadcn' > file-tree 1`] = 
   "jsconfig.json",
   "package.json",
   "prettier.config.js",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.jsx",
+  "src/components/common/Container.jsx",
+  "src/components/common/Heading.jsx",
+  "src/components/common/Image.jsx",
+  "src/components/common/Link.jsx",
+  "src/components/common/NotFound.jsx",
+  "src/components/common/Text.jsx",
+  "src/components/common/ThemeToggle.jsx",
+  "src/components/layouts/RootLayout.jsx",
   "src/components/ui/badge.jsx",
   "src/components/ui/button.jsx",
   "src/components/ui/card.jsx",
   "src/components/ui/input.jsx",
   "src/components/ui/label.jsx",
   "src/components/ui/separator.jsx",
-  "src/context/AuthContext.jsx",
-  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/config/env.jsx",
+  "src/constants/index.jsx",
+  "src/features/admin-dashboard/api/getUsers.js",
   "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/data/users.js",
+  "src/features/admin-dashboard/hooks/useUsersQuery.js",
+  "src/features/admin-dashboard/index.js",
+  "src/features/admin-dashboard/layouts/AdminLayout.jsx",
   "src/features/admin-dashboard/pages/Admin.jsx",
-  "src/features/auth/components/AdminRoute.jsx",
-  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/admin-dashboard/types/user.type.js",
+  "src/features/auth/api/auth.api.js",
+  "src/features/auth/hooks/useForgotPasswordMutation.js",
+  "src/features/auth/hooks/useLoginMutation.js",
+  "src/features/auth/hooks/useSignupMutation.js",
+  "src/features/auth/index.js",
+  "src/features/auth/layouts/AuthLayout.jsx",
   "src/features/auth/pages/ForgotPassword.jsx",
   "src/features/auth/pages/Login.jsx",
   "src/features/auth/pages/Signup.jsx",
-  "src/features/landing/components/FeatureSection.jsx",
-  "src/features/landing/components/Footer.jsx",
-  "src/features/landing/components/Hero.jsx",
-  "src/features/landing/index.jsx",
-  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/auth/schemas/forgotPassword.schema.js",
+  "src/features/auth/schemas/login.schema.js",
+  "src/features/auth/schemas/signup.schema.js",
+  "src/features/auth/services/auth.service.js",
+  "src/features/auth/types/auth.type.js",
+  "src/features/home/components/FeatureSection.jsx",
+  "src/features/home/components/Footer.jsx",
+  "src/features/home/components/Hero.jsx",
+  "src/features/home/data/features.js",
+  "src/features/home/index.js",
+  "src/features/home/pages/Home.jsx",
   "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/data/stats.js",
+  "src/features/user-dashboard/index.js",
+  "src/features/user-dashboard/layouts/DashboardLayout.jsx",
   "src/features/user-dashboard/pages/Dashboard.jsx",
-  "src/hooks/useAuth.jsx",
+  "src/hooks/useMobile.jsx",
+  "src/hooks/useTheme.jsx",
   "src/index.css",
+  "src/lib/axios.jsx",
   "src/lib/utils.jsx",
   "src/main.jsx",
-  "src/router/index.jsx",
-  "src/router/routes.generated.jsx",
+  "src/middlewares/authMiddleware.jsx",
+  "src/middlewares/guestMiddleware.jsx",
+  "src/models/user.model.jsx",
+  "src/providers/theme-provider.jsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.jsx",
+  "src/routes/routes.generated.jsx",
+  "src/store/useAuthStore.jsx",
   "src/test/setup.js",
+  "src/types/api.type.jsx",
+  "src/types/models/.gitkeep",
   "vite.config.js",
   "vitest.config.js",
 ]
@@ -121,18 +225,23 @@ exports[`scaffold permutations > 'js'-'react-router'-'shadcn' > file-tree 1`] = 
 exports[`scaffold permutations > 'js'-'react-router'-'shadcn' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from 'react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -150,7 +259,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    globals: true,
   },
 });
 "
@@ -165,28 +294,68 @@ exports[`scaffold permutations > 'js'-'tanstack-router'-'heroui' > file-tree 1`]
   "jsconfig.json",
   "package.json",
   "prettier.config.js",
-  "src/context/AuthContext.jsx",
-  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.jsx",
+  "src/components/common/Container.jsx",
+  "src/components/common/Heading.jsx",
+  "src/components/common/Image.jsx",
+  "src/components/common/Link.jsx",
+  "src/components/common/NotFound.jsx",
+  "src/components/common/Text.jsx",
+  "src/components/common/ThemeToggle.jsx",
+  "src/components/layouts/RootLayout.jsx",
+  "src/config/env.jsx",
+  "src/constants/index.jsx",
+  "src/features/admin-dashboard/api/getUsers.js",
   "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/data/users.js",
+  "src/features/admin-dashboard/hooks/useUsersQuery.js",
+  "src/features/admin-dashboard/index.js",
+  "src/features/admin-dashboard/layouts/AdminLayout.jsx",
   "src/features/admin-dashboard/pages/Admin.jsx",
-  "src/features/auth/components/AdminRoute.jsx",
-  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/admin-dashboard/types/user.type.js",
+  "src/features/auth/api/auth.api.js",
+  "src/features/auth/hooks/useForgotPasswordMutation.js",
+  "src/features/auth/hooks/useLoginMutation.js",
+  "src/features/auth/hooks/useSignupMutation.js",
+  "src/features/auth/index.js",
+  "src/features/auth/layouts/AuthLayout.jsx",
   "src/features/auth/pages/ForgotPassword.jsx",
   "src/features/auth/pages/Login.jsx",
   "src/features/auth/pages/Signup.jsx",
-  "src/features/landing/components/FeatureSection.jsx",
-  "src/features/landing/components/Footer.jsx",
-  "src/features/landing/components/Hero.jsx",
-  "src/features/landing/index.jsx",
-  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/auth/schemas/forgotPassword.schema.js",
+  "src/features/auth/schemas/login.schema.js",
+  "src/features/auth/schemas/signup.schema.js",
+  "src/features/auth/services/auth.service.js",
+  "src/features/auth/types/auth.type.js",
+  "src/features/home/components/FeatureSection.jsx",
+  "src/features/home/components/Footer.jsx",
+  "src/features/home/components/Hero.jsx",
+  "src/features/home/data/features.js",
+  "src/features/home/index.js",
+  "src/features/home/pages/Home.jsx",
   "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/data/stats.js",
+  "src/features/user-dashboard/index.js",
+  "src/features/user-dashboard/layouts/DashboardLayout.jsx",
   "src/features/user-dashboard/pages/Dashboard.jsx",
-  "src/hooks/useAuth.jsx",
+  "src/hooks/useMobile.jsx",
+  "src/hooks/useTheme.jsx",
   "src/index.css",
+  "src/lib/axios.jsx",
+  "src/lib/utils.jsx",
   "src/main.jsx",
-  "src/router/index.jsx",
-  "src/router/routes.generated.jsx",
+  "src/middlewares/authMiddleware.jsx",
+  "src/middlewares/guestMiddleware.jsx",
+  "src/models/user.model.jsx",
+  "src/providers/theme-provider.jsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.jsx",
+  "src/routes/routes.generated.jsx",
+  "src/store/useAuthStore.jsx",
   "src/test/setup.js",
+  "src/types/api.type.jsx",
+  "src/types/models/.gitkeep",
   "vite.config.js",
   "vitest.config.js",
 ]
@@ -195,18 +364,23 @@ exports[`scaffold permutations > 'js'-'tanstack-router'-'heroui' > file-tree 1`]
 exports[`scaffold permutations > 'js'-'tanstack-router'-'heroui' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from '@tanstack/react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -224,7 +398,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    globals: true,
   },
 });
 "
@@ -240,35 +434,74 @@ exports[`scaffold permutations > 'js'-'tanstack-router'-'shadcn' > file-tree 1`]
   "jsconfig.json",
   "package.json",
   "prettier.config.js",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.jsx",
+  "src/components/common/Container.jsx",
+  "src/components/common/Heading.jsx",
+  "src/components/common/Image.jsx",
+  "src/components/common/Link.jsx",
+  "src/components/common/NotFound.jsx",
+  "src/components/common/Text.jsx",
+  "src/components/common/ThemeToggle.jsx",
+  "src/components/layouts/RootLayout.jsx",
   "src/components/ui/badge.jsx",
   "src/components/ui/button.jsx",
   "src/components/ui/card.jsx",
   "src/components/ui/input.jsx",
   "src/components/ui/label.jsx",
   "src/components/ui/separator.jsx",
-  "src/context/AuthContext.jsx",
-  "src/features/admin-dashboard/components/AdminLayout.jsx",
+  "src/config/env.jsx",
+  "src/constants/index.jsx",
+  "src/features/admin-dashboard/api/getUsers.js",
   "src/features/admin-dashboard/components/UsersTable.jsx",
+  "src/features/admin-dashboard/data/users.js",
+  "src/features/admin-dashboard/hooks/useUsersQuery.js",
+  "src/features/admin-dashboard/index.js",
+  "src/features/admin-dashboard/layouts/AdminLayout.jsx",
   "src/features/admin-dashboard/pages/Admin.jsx",
-  "src/features/auth/components/AdminRoute.jsx",
-  "src/features/auth/components/ProtectedRoute.jsx",
+  "src/features/admin-dashboard/types/user.type.js",
+  "src/features/auth/api/auth.api.js",
+  "src/features/auth/hooks/useForgotPasswordMutation.js",
+  "src/features/auth/hooks/useLoginMutation.js",
+  "src/features/auth/hooks/useSignupMutation.js",
+  "src/features/auth/index.js",
+  "src/features/auth/layouts/AuthLayout.jsx",
   "src/features/auth/pages/ForgotPassword.jsx",
   "src/features/auth/pages/Login.jsx",
   "src/features/auth/pages/Signup.jsx",
-  "src/features/landing/components/FeatureSection.jsx",
-  "src/features/landing/components/Footer.jsx",
-  "src/features/landing/components/Hero.jsx",
-  "src/features/landing/index.jsx",
-  "src/features/user-dashboard/components/DashboardLayout.jsx",
+  "src/features/auth/schemas/forgotPassword.schema.js",
+  "src/features/auth/schemas/login.schema.js",
+  "src/features/auth/schemas/signup.schema.js",
+  "src/features/auth/services/auth.service.js",
+  "src/features/auth/types/auth.type.js",
+  "src/features/home/components/FeatureSection.jsx",
+  "src/features/home/components/Footer.jsx",
+  "src/features/home/components/Hero.jsx",
+  "src/features/home/data/features.js",
+  "src/features/home/index.js",
+  "src/features/home/pages/Home.jsx",
   "src/features/user-dashboard/components/Sidebar.jsx",
+  "src/features/user-dashboard/data/stats.js",
+  "src/features/user-dashboard/index.js",
+  "src/features/user-dashboard/layouts/DashboardLayout.jsx",
   "src/features/user-dashboard/pages/Dashboard.jsx",
-  "src/hooks/useAuth.jsx",
+  "src/hooks/useMobile.jsx",
+  "src/hooks/useTheme.jsx",
   "src/index.css",
+  "src/lib/axios.jsx",
   "src/lib/utils.jsx",
   "src/main.jsx",
-  "src/router/index.jsx",
-  "src/router/routes.generated.jsx",
+  "src/middlewares/authMiddleware.jsx",
+  "src/middlewares/guestMiddleware.jsx",
+  "src/models/user.model.jsx",
+  "src/providers/theme-provider.jsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.jsx",
+  "src/routes/routes.generated.jsx",
+  "src/store/useAuthStore.jsx",
   "src/test/setup.js",
+  "src/types/api.type.jsx",
+  "src/types/models/.gitkeep",
   "vite.config.js",
   "vitest.config.js",
 ]
@@ -277,18 +510,23 @@ exports[`scaffold permutations > 'js'-'tanstack-router'-'shadcn' > file-tree 1`]
 exports[`scaffold permutations > 'js'-'tanstack-router'-'shadcn' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from '@tanstack/react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -306,7 +544,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    globals: true,
   },
 });
 "
@@ -320,28 +578,68 @@ exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > file-tree 1`] = 
   "index.html",
   "package.json",
   "prettier.config.js",
-  "src/context/AuthContext.tsx",
-  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.tsx",
+  "src/components/common/Container.tsx",
+  "src/components/common/Heading.tsx",
+  "src/components/common/Image.tsx",
+  "src/components/common/Link.tsx",
+  "src/components/common/NotFound.tsx",
+  "src/components/common/Text.tsx",
+  "src/components/common/ThemeToggle.tsx",
+  "src/components/layouts/RootLayout.tsx",
+  "src/config/env.tsx",
+  "src/constants/index.tsx",
+  "src/features/admin-dashboard/api/getUsers.ts",
   "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/data/users.ts",
+  "src/features/admin-dashboard/hooks/useUsersQuery.ts",
+  "src/features/admin-dashboard/index.ts",
+  "src/features/admin-dashboard/layouts/AdminLayout.tsx",
   "src/features/admin-dashboard/pages/Admin.tsx",
-  "src/features/auth/components/AdminRoute.tsx",
-  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/admin-dashboard/types/user.type.ts",
+  "src/features/auth/api/auth.api.ts",
+  "src/features/auth/hooks/useForgotPasswordMutation.ts",
+  "src/features/auth/hooks/useLoginMutation.ts",
+  "src/features/auth/hooks/useSignupMutation.ts",
+  "src/features/auth/index.ts",
+  "src/features/auth/layouts/AuthLayout.tsx",
   "src/features/auth/pages/ForgotPassword.tsx",
   "src/features/auth/pages/Login.tsx",
   "src/features/auth/pages/Signup.tsx",
-  "src/features/landing/components/FeatureSection.tsx",
-  "src/features/landing/components/Footer.tsx",
-  "src/features/landing/components/Hero.tsx",
-  "src/features/landing/index.tsx",
-  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/auth/schemas/forgotPassword.schema.ts",
+  "src/features/auth/schemas/login.schema.ts",
+  "src/features/auth/schemas/signup.schema.ts",
+  "src/features/auth/services/auth.service.ts",
+  "src/features/auth/types/auth.type.ts",
+  "src/features/home/components/FeatureSection.tsx",
+  "src/features/home/components/Footer.tsx",
+  "src/features/home/components/Hero.tsx",
+  "src/features/home/data/features.ts",
+  "src/features/home/index.ts",
+  "src/features/home/pages/Home.tsx",
   "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/data/stats.ts",
+  "src/features/user-dashboard/index.ts",
+  "src/features/user-dashboard/layouts/DashboardLayout.tsx",
   "src/features/user-dashboard/pages/Dashboard.tsx",
-  "src/hooks/useAuth.tsx",
+  "src/hooks/useMobile.tsx",
+  "src/hooks/useTheme.tsx",
   "src/index.css",
+  "src/lib/axios.tsx",
+  "src/lib/utils.tsx",
   "src/main.tsx",
-  "src/router/index.tsx",
-  "src/router/routes.generated.tsx",
+  "src/middlewares/authMiddleware.tsx",
+  "src/middlewares/guestMiddleware.tsx",
+  "src/models/user.model.tsx",
+  "src/providers/theme-provider.tsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.tsx",
+  "src/routes/routes.generated.tsx",
+  "src/store/useAuthStore.tsx",
   "src/test/setup.ts",
+  "src/types/api.type.tsx",
+  "src/types/models/.gitkeep",
   "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
@@ -354,18 +652,23 @@ exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > file-tree 1`] = 
 exports[`scaffold permutations > 'ts'-'react-router'-'heroui' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from 'react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -383,7 +686,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: true,
   },
 });
 "
@@ -398,35 +721,74 @@ exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > file-tree 1`] = 
   "index.html",
   "package.json",
   "prettier.config.js",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.tsx",
+  "src/components/common/Container.tsx",
+  "src/components/common/Heading.tsx",
+  "src/components/common/Image.tsx",
+  "src/components/common/Link.tsx",
+  "src/components/common/NotFound.tsx",
+  "src/components/common/Text.tsx",
+  "src/components/common/ThemeToggle.tsx",
+  "src/components/layouts/RootLayout.tsx",
   "src/components/ui/badge.tsx",
   "src/components/ui/button.tsx",
   "src/components/ui/card.tsx",
   "src/components/ui/input.tsx",
   "src/components/ui/label.tsx",
   "src/components/ui/separator.tsx",
-  "src/context/AuthContext.tsx",
-  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/config/env.tsx",
+  "src/constants/index.tsx",
+  "src/features/admin-dashboard/api/getUsers.ts",
   "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/data/users.ts",
+  "src/features/admin-dashboard/hooks/useUsersQuery.ts",
+  "src/features/admin-dashboard/index.ts",
+  "src/features/admin-dashboard/layouts/AdminLayout.tsx",
   "src/features/admin-dashboard/pages/Admin.tsx",
-  "src/features/auth/components/AdminRoute.tsx",
-  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/admin-dashboard/types/user.type.ts",
+  "src/features/auth/api/auth.api.ts",
+  "src/features/auth/hooks/useForgotPasswordMutation.ts",
+  "src/features/auth/hooks/useLoginMutation.ts",
+  "src/features/auth/hooks/useSignupMutation.ts",
+  "src/features/auth/index.ts",
+  "src/features/auth/layouts/AuthLayout.tsx",
   "src/features/auth/pages/ForgotPassword.tsx",
   "src/features/auth/pages/Login.tsx",
   "src/features/auth/pages/Signup.tsx",
-  "src/features/landing/components/FeatureSection.tsx",
-  "src/features/landing/components/Footer.tsx",
-  "src/features/landing/components/Hero.tsx",
-  "src/features/landing/index.tsx",
-  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/auth/schemas/forgotPassword.schema.ts",
+  "src/features/auth/schemas/login.schema.ts",
+  "src/features/auth/schemas/signup.schema.ts",
+  "src/features/auth/services/auth.service.ts",
+  "src/features/auth/types/auth.type.ts",
+  "src/features/home/components/FeatureSection.tsx",
+  "src/features/home/components/Footer.tsx",
+  "src/features/home/components/Hero.tsx",
+  "src/features/home/data/features.ts",
+  "src/features/home/index.ts",
+  "src/features/home/pages/Home.tsx",
   "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/data/stats.ts",
+  "src/features/user-dashboard/index.ts",
+  "src/features/user-dashboard/layouts/DashboardLayout.tsx",
   "src/features/user-dashboard/pages/Dashboard.tsx",
-  "src/hooks/useAuth.tsx",
+  "src/hooks/useMobile.tsx",
+  "src/hooks/useTheme.tsx",
   "src/index.css",
+  "src/lib/axios.tsx",
   "src/lib/utils.tsx",
   "src/main.tsx",
-  "src/router/index.tsx",
-  "src/router/routes.generated.tsx",
+  "src/middlewares/authMiddleware.tsx",
+  "src/middlewares/guestMiddleware.tsx",
+  "src/models/user.model.tsx",
+  "src/providers/theme-provider.tsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.tsx",
+  "src/routes/routes.generated.tsx",
+  "src/store/useAuthStore.tsx",
   "src/test/setup.ts",
+  "src/types/api.type.tsx",
+  "src/types/models/.gitkeep",
   "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
@@ -439,18 +801,23 @@ exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > file-tree 1`] = 
 exports[`scaffold permutations > 'ts'-'react-router'-'shadcn' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from 'react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -468,7 +835,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: true,
   },
 });
 "
@@ -482,28 +869,68 @@ exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > file-tree 1`]
   "index.html",
   "package.json",
   "prettier.config.js",
-  "src/context/AuthContext.tsx",
-  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.tsx",
+  "src/components/common/Container.tsx",
+  "src/components/common/Heading.tsx",
+  "src/components/common/Image.tsx",
+  "src/components/common/Link.tsx",
+  "src/components/common/NotFound.tsx",
+  "src/components/common/Text.tsx",
+  "src/components/common/ThemeToggle.tsx",
+  "src/components/layouts/RootLayout.tsx",
+  "src/config/env.tsx",
+  "src/constants/index.tsx",
+  "src/features/admin-dashboard/api/getUsers.ts",
   "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/data/users.ts",
+  "src/features/admin-dashboard/hooks/useUsersQuery.ts",
+  "src/features/admin-dashboard/index.ts",
+  "src/features/admin-dashboard/layouts/AdminLayout.tsx",
   "src/features/admin-dashboard/pages/Admin.tsx",
-  "src/features/auth/components/AdminRoute.tsx",
-  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/admin-dashboard/types/user.type.ts",
+  "src/features/auth/api/auth.api.ts",
+  "src/features/auth/hooks/useForgotPasswordMutation.ts",
+  "src/features/auth/hooks/useLoginMutation.ts",
+  "src/features/auth/hooks/useSignupMutation.ts",
+  "src/features/auth/index.ts",
+  "src/features/auth/layouts/AuthLayout.tsx",
   "src/features/auth/pages/ForgotPassword.tsx",
   "src/features/auth/pages/Login.tsx",
   "src/features/auth/pages/Signup.tsx",
-  "src/features/landing/components/FeatureSection.tsx",
-  "src/features/landing/components/Footer.tsx",
-  "src/features/landing/components/Hero.tsx",
-  "src/features/landing/index.tsx",
-  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/auth/schemas/forgotPassword.schema.ts",
+  "src/features/auth/schemas/login.schema.ts",
+  "src/features/auth/schemas/signup.schema.ts",
+  "src/features/auth/services/auth.service.ts",
+  "src/features/auth/types/auth.type.ts",
+  "src/features/home/components/FeatureSection.tsx",
+  "src/features/home/components/Footer.tsx",
+  "src/features/home/components/Hero.tsx",
+  "src/features/home/data/features.ts",
+  "src/features/home/index.ts",
+  "src/features/home/pages/Home.tsx",
   "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/data/stats.ts",
+  "src/features/user-dashboard/index.ts",
+  "src/features/user-dashboard/layouts/DashboardLayout.tsx",
   "src/features/user-dashboard/pages/Dashboard.tsx",
-  "src/hooks/useAuth.tsx",
+  "src/hooks/useMobile.tsx",
+  "src/hooks/useTheme.tsx",
   "src/index.css",
+  "src/lib/axios.tsx",
+  "src/lib/utils.tsx",
   "src/main.tsx",
-  "src/router/index.tsx",
-  "src/router/routes.generated.tsx",
+  "src/middlewares/authMiddleware.tsx",
+  "src/middlewares/guestMiddleware.tsx",
+  "src/models/user.model.tsx",
+  "src/providers/theme-provider.tsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.tsx",
+  "src/routes/routes.generated.tsx",
+  "src/store/useAuthStore.tsx",
   "src/test/setup.ts",
+  "src/types/api.type.tsx",
+  "src/types/models/.gitkeep",
   "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
@@ -516,18 +943,23 @@ exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > file-tree 1`]
 exports[`scaffold permutations > 'ts'-'tanstack-router'-'heroui' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from '@tanstack/react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -545,7 +977,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: true,
   },
 });
 "
@@ -560,35 +1012,74 @@ exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > file-tree 1`]
   "index.html",
   "package.json",
   "prettier.config.js",
+  "src/assets/.gitkeep",
+  "src/components/common/Box.tsx",
+  "src/components/common/Container.tsx",
+  "src/components/common/Heading.tsx",
+  "src/components/common/Image.tsx",
+  "src/components/common/Link.tsx",
+  "src/components/common/NotFound.tsx",
+  "src/components/common/Text.tsx",
+  "src/components/common/ThemeToggle.tsx",
+  "src/components/layouts/RootLayout.tsx",
   "src/components/ui/badge.tsx",
   "src/components/ui/button.tsx",
   "src/components/ui/card.tsx",
   "src/components/ui/input.tsx",
   "src/components/ui/label.tsx",
   "src/components/ui/separator.tsx",
-  "src/context/AuthContext.tsx",
-  "src/features/admin-dashboard/components/AdminLayout.tsx",
+  "src/config/env.tsx",
+  "src/constants/index.tsx",
+  "src/features/admin-dashboard/api/getUsers.ts",
   "src/features/admin-dashboard/components/UsersTable.tsx",
+  "src/features/admin-dashboard/data/users.ts",
+  "src/features/admin-dashboard/hooks/useUsersQuery.ts",
+  "src/features/admin-dashboard/index.ts",
+  "src/features/admin-dashboard/layouts/AdminLayout.tsx",
   "src/features/admin-dashboard/pages/Admin.tsx",
-  "src/features/auth/components/AdminRoute.tsx",
-  "src/features/auth/components/ProtectedRoute.tsx",
+  "src/features/admin-dashboard/types/user.type.ts",
+  "src/features/auth/api/auth.api.ts",
+  "src/features/auth/hooks/useForgotPasswordMutation.ts",
+  "src/features/auth/hooks/useLoginMutation.ts",
+  "src/features/auth/hooks/useSignupMutation.ts",
+  "src/features/auth/index.ts",
+  "src/features/auth/layouts/AuthLayout.tsx",
   "src/features/auth/pages/ForgotPassword.tsx",
   "src/features/auth/pages/Login.tsx",
   "src/features/auth/pages/Signup.tsx",
-  "src/features/landing/components/FeatureSection.tsx",
-  "src/features/landing/components/Footer.tsx",
-  "src/features/landing/components/Hero.tsx",
-  "src/features/landing/index.tsx",
-  "src/features/user-dashboard/components/DashboardLayout.tsx",
+  "src/features/auth/schemas/forgotPassword.schema.ts",
+  "src/features/auth/schemas/login.schema.ts",
+  "src/features/auth/schemas/signup.schema.ts",
+  "src/features/auth/services/auth.service.ts",
+  "src/features/auth/types/auth.type.ts",
+  "src/features/home/components/FeatureSection.tsx",
+  "src/features/home/components/Footer.tsx",
+  "src/features/home/components/Hero.tsx",
+  "src/features/home/data/features.ts",
+  "src/features/home/index.ts",
+  "src/features/home/pages/Home.tsx",
   "src/features/user-dashboard/components/Sidebar.tsx",
+  "src/features/user-dashboard/data/stats.ts",
+  "src/features/user-dashboard/index.ts",
+  "src/features/user-dashboard/layouts/DashboardLayout.tsx",
   "src/features/user-dashboard/pages/Dashboard.tsx",
-  "src/hooks/useAuth.tsx",
+  "src/hooks/useMobile.tsx",
+  "src/hooks/useTheme.tsx",
   "src/index.css",
+  "src/lib/axios.tsx",
   "src/lib/utils.tsx",
   "src/main.tsx",
-  "src/router/index.tsx",
-  "src/router/routes.generated.tsx",
+  "src/middlewares/authMiddleware.tsx",
+  "src/middlewares/guestMiddleware.tsx",
+  "src/models/user.model.tsx",
+  "src/providers/theme-provider.tsx",
+  "src/routes/.gitkeep",
+  "src/routes/index.tsx",
+  "src/routes/routes.generated.tsx",
+  "src/store/useAuthStore.tsx",
   "src/test/setup.ts",
+  "src/types/api.type.tsx",
+  "src/types/models/.gitkeep",
   "src/vite-env.d.ts",
   "tsconfig.app.json",
   "tsconfig.json",
@@ -601,18 +1092,23 @@ exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > file-tree 1`]
 exports[`scaffold permutations > 'ts'-'tanstack-router'-'shadcn' > main 1`] = `
 "import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@/index.css';
 
 import { RouterProvider } from '@tanstack/react-router';
 
-import { router } from '@/router';
-import { AuthProvider } from '@/context/AuthContext';
+import { router } from '@/routes';
+import { ThemeProvider } from '@/providers/theme-provider';
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );
 "
@@ -630,7 +1126,27 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@/assets': path.resolve(__dirname, './src/assets'),
+      '@/components': path.resolve(__dirname, './src/components'),
+      '@/config': path.resolve(__dirname, './src/config'),
+      '@/constants': path.resolve(__dirname, './src/constants'),
+      '@/features': path.resolve(__dirname, './src/features'),
+      '@/hooks': path.resolve(__dirname, './src/hooks'),
+      '@/lib': path.resolve(__dirname, './src/lib'),
+      '@/middlewares': path.resolve(__dirname, './src/middlewares'),
+      '@/models': path.resolve(__dirname, './src/models'),
+      '@/providers': path.resolve(__dirname, './src/providers'),
+      '@/routes': path.resolve(__dirname, './src/routes'),
+      '@/store': path.resolve(__dirname, './src/store'),
+      '@/types': path.resolve(__dirname, './src/types'),
+    },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: true,
   },
 });
 "

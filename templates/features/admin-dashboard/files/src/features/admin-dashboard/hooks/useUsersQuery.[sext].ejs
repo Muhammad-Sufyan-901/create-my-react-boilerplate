@@ -1,0 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
+import { getUsers } from '@/features/admin-dashboard/api/getUsers';
+
+export function useUsersQuery() {
+  return useQuery({
+    queryKey: ['admin', 'users'],
+    queryFn: getUsers,
+  });
+}

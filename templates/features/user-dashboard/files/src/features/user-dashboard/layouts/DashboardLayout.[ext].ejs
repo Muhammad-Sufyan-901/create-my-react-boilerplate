@@ -1,0 +1,23 @@
+<% if (isTS) { %>
+import type { ReactNode } from 'react';
+import Sidebar from '@/features/user-dashboard/components/Sidebar';
+
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
+<% } else { %>
+import Sidebar from '@/features/user-dashboard/components/Sidebar';
+
+export default function DashboardLayout({ children }) {
+<% } %>
+  return (
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <main className="flex-1 overflow-auto p-8">
+        {children}
+      </main>
+    </div>
+  );
+}

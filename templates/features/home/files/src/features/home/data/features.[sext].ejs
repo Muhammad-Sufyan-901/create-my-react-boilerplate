@@ -1,0 +1,18 @@
+<% if (isTS) { %>
+export interface FeatureItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export const FEATURES: FeatureItem[] = [
+<% } else { %>
+export const FEATURES = [
+<% } %>
+  { icon: '⚡', title: 'Vite + React', description: 'Lightning-fast HMR and optimised production builds out of the box.' },
+  { icon: '🎨', title: '<%= ui === "shadcn" ? "shadcn/ui" : "HeroUI" %>', description: 'Beautiful, accessible components styled with Tailwind CSS v4.' },
+  { icon: '🔒', title: 'Auth ready', description: 'Zustand auth store with session persistence and route-level guards.' },
+  { icon: '📊', title: 'Dashboard', description: 'User and Admin dashboards pre-wired with sidebar navigation.' },
+  { icon: '🧪', title: 'Tests included', description: 'Vitest + React Testing Library setup with example tests per feature.' },
+  { icon: '🚀', title: 'CI / CD', description: 'GitHub Actions workflow — lint, typecheck, test, build on every PR.' },
+];

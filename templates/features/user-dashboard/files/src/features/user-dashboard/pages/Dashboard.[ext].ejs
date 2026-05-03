@@ -1,8 +1,9 @@
-import DashboardLayout from '../components/DashboardLayout';
-import { useAuth } from '@/hooks/useAuth';
+import DashboardLayout from '@/features/user-dashboard/layouts/DashboardLayout';
+import { DASHBOARD_STATS } from '@/features/user-dashboard/data/stats';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const user = useAuthStore(state => state.user);
 
   return (
     <DashboardLayout>
@@ -13,11 +14,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          {[
-            { label: 'Total projects', value: '12' },
-            { label: 'Active tasks',   value: '4' },
-            { label: 'Team members',   value: '7' },
-          ].map(card => (
+          {DASHBOARD_STATS.map(card => (
             <div key={card.label} className="rounded-lg border bg-card p-5 shadow-sm">
               <p className="text-sm text-muted-foreground">{card.label}</p>
               <p className="mt-1 text-3xl font-bold">{card.value}</p>

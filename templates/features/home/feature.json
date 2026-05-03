@@ -1,0 +1,11 @@
+{
+  "id": "home",
+  "files": ["**/*"],
+  "dependencies": { "any": [] },
+  "routes": [
+    { "path": "/", "component": "features/home/pages/Home" }
+  ],
+  "navItems": [
+    { "label": "Home", "to": "/", "scope": "public" }
+  ]
+}

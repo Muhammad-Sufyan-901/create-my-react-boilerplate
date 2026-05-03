@@ -4,6 +4,7 @@
   "dependencies": {
     "any": ["react-hook-form", "zod", "@hookform/resolvers"]
   },
+  "devDependencies": { "any": [] },
   "routes": [
     { "path": "/login",           "component": "features/auth/pages/Login" },
     { "path": "/signup",          "component": "features/auth/pages/Signup" },

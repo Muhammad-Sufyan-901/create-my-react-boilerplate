@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 <% if (router === 'react-router') { %>
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 <% } else { %>
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 <% } %>
 <% if (ui === 'shadcn') { %>
 import { Button } from '@/components/ui/button';
@@ -12,57 +13,55 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 <% } else { %>
 import { Button, Card } from '@heroui/react';
 <% } %>
-import { useAuth } from '@/hooks/useAuth';
+import { AuthLayout } from '@/features/auth/layouts/AuthLayout';
+import { loginSchema } from '@/features/auth/schemas/login.schema';
+import { useLoginMutation } from '@/features/auth/hooks/useLoginMutation';
+<% if (isTS) { %>
+import type { LoginFormData } from '@/features/auth/schemas/login.schema';
+<% } %>
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<% if (isTS) { %><string | null><% } %>(null);
-  const [isPending, setIsPending] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
+  const loginMutation = useLoginMutation();
 
-  const handleSubmit = async (e<% if (isTS) { %>: React.FormEvent<% } %>) => {
-    e.preventDefault();
-    setError(null);
-    setIsPending(true);
-    try {
-      await login(email, password);
-<% if (router === 'react-router') { %>
-      navigate('/dashboard');
-<% } else { %>
-      void navigate({ to: '/dashboard' });
-<% } %>
-    } catch {
-      setError('Invalid email or password.');
-    } finally {
-      setIsPending(false);
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<% if (isTS) { %><LoginFormData><% } %>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = handleSubmit(async (data) => {
+    await loginMutation.mutateAsync(data);
+  });
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <AuthLayout>
 <% if (ui === 'shadcn') { %>
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Sign in</CardTitle>
           <CardDescription>Enter your credentials to access your account.</CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <CardContent className="space-y-4">
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {loginMutation.error && (
+              <p className="text-sm text-destructive">{(loginMutation.error as Error).message}</p>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+              <Input id="email" type="email" placeholder="you@example.com" {...register('email')} />
+              {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+              <Input id="password" type="password" {...register('password')} />
+              {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? 'Signing in…' : 'Sign in'}
+            <Button type="submit" className="w-full" disabled={isSubmitting || loginMutation.isPending}>
+              {loginMutation.isPending ? 'Signing in…' : 'Sign in'}
             </Button>
             <p className="text-center text-sm text-muted-foreground">
               No account?{' '}
@@ -80,9 +79,11 @@ export default function Login() {
           <Card.Title className="text-2xl">Sign in</Card.Title>
           <Card.Description>Enter your credentials to access your account.</Card.Description>
         </Card.Header>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <Card.Content className="flex flex-col gap-4 pt-2">
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {loginMutation.error && (
+              <p className="text-sm text-red-500">{(loginMutation.error as Error).message}</p>
+            )}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium" htmlFor="email">Email</label>
               <input
@@ -90,10 +91,9 @@ export default function Login() {
                 type="email"
                 className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
                 placeholder="you@example.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
+                {...register('email')}
               />
+              {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium" htmlFor="password">Password</label>
@@ -101,15 +101,14 @@ export default function Login() {
                 id="password"
                 type="password"
                 className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
+                {...register('password')}
               />
+              {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
             </div>
           </Card.Content>
           <Card.Footer className="flex flex-col gap-3">
-            <Button type="submit" variant="primary" className="w-full" isDisabled={isPending}>
-              {isPending ? 'Signing in…' : 'Sign in'}
+            <Button type="submit" variant="primary" className="w-full" isDisabled={isSubmitting || loginMutation.isPending}>
+              {loginMutation.isPending ? 'Signing in…' : 'Sign in'}
             </Button>
             <p className="text-center text-sm text-zinc-500">
               No account?{' '}
@@ -122,6 +121,6 @@ export default function Login() {
         </form>
       </Card>
 <% } %>
-    </div>
+    </AuthLayout>
   );
 }

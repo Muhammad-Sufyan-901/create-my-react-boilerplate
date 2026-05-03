@@ -1,0 +1,77 @@
+import {
+  createRouter,
+  createRoute,
+  createRootRoute,
+  Outlet,
+} from '@tanstack/react-router';
+import { RootLayout } from '@/components/layouts/RootLayout';
+import { NotFound } from '@/components/common/NotFound';
+import { authMiddleware } from '@/middlewares/authMiddleware';
+import { guestMiddleware } from '@/middlewares/guestMiddleware';
+import Home from '@/features/home/pages/Home';
+import Login from '@/features/auth/pages/Login';
+import Signup from '@/features/auth/pages/Signup';
+import ForgotPassword from '@/features/auth/pages/ForgotPassword';
+import Dashboard from '@/features/user-dashboard/pages/Dashboard';
+import Admin from '@/features/admin-dashboard/pages/Admin';
+
+const rootRoute = createRootRoute({
+  component: RootLayout,
+  notFoundComponent: NotFound,
+});
+
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: Home,
+});
+
+const loginRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/login',
+  beforeLoad: guestMiddleware,
+  component: Login,
+});
+
+const signupRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/signup',
+  beforeLoad: guestMiddleware,
+  component: Signup,
+});
+
+const forgotPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/forgot-password',
+  component: ForgotPassword,
+});
+
+const dashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/dashboard',
+  beforeLoad: authMiddleware,
+  component: Dashboard,
+});
+
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin',
+  beforeLoad: authMiddleware,
+  component: Admin,
+});
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  loginRoute,
+  signupRoute,
+  forgotPasswordRoute,
+  dashboardRoute,
+  adminRoute,
+]);
+
+export const router = createRouter({ routeTree });
+<% if (isTS) { %>
+declare module '@tanstack/react-router' {
+  interface Register { router: typeof router }
+}
+<% } %>

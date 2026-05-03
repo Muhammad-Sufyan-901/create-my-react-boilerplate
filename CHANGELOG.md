@@ -2,6 +2,56 @@
 
 ---
 
+## [0.2.0] — Architecture Refactoring (Phase H) — 2026-05-03
+
+**Breaking change** — generated project structure has been completely overhauled to match the "Generated App Architecture Standard" in `CLAUDE.md`. All existing generated projects are incompatible; re-scaffold from this version.
+
+### Added
+
+- **`src/store/useAuthStore.[ext]`** — Zustand auth store with `persist` middleware (sessionStorage); replaces React Context. API: `user`, `token`, `isAuthenticated`, `login`, `signup`, `logout`.
+- **`src/middlewares/authMiddleware.[ext]`** + **`guestMiddleware.[ext]`** — route-level guards. TanStack Router: `beforeLoad`. React Router: `loader`. No longer React wrapper components.
+- **`src/lib/utils.[ext]`** — `cn()` helper (`clsx` + `tailwind-merge`) promoted to base layer so both shadcn and HeroUI builds have it.
+- **`src/lib/axios.[ext]`** — preconfigured Axios instance with auth-header interceptor and 401 logout.
+- **`src/config/env.[ext]`** — typed env loader (`VITE_API_URL`, `VITE_APP_NAME`).
+- **`src/models/user.model.[ext]`** — `User` domain shape.
+- **`src/types/api.type.[ext]`** — `ApiResponse<T>` and `ApiError` envelopes.
+- **`src/providers/theme-provider.[ext]`** — `next-themes` wrapper.
+- **`src/hooks/useMobile.[ext]`** + **`useTheme.[ext]`** — universal hooks.
+- **`src/components/common/`** — polymorphic primitives: `Box`, `Container`, `Text`, `Heading`, `Image`, `Link`, `NotFound`, `ThemeToggle`.
+- **`src/components/layouts/RootLayout.[ext]`** — top-level layout wrapping `<Outlet/>`.
+- **`.gitkeep` scaffolds** for `src/assets/`, `src/routes/`, `src/features/`, `src/types/models/`.
+- **`main.[ext]`** now wraps app in `<QueryClientProvider>` + `<ThemeProvider>` (dropped `<AuthProvider>`).
+
+### Changed
+
+- **`landing` → `home` feature** — directory, `feature.json.id`, route component path all updated.
+- **Router entry point moved** from `templates/router/*/files/src/router/index.[ext]` to `src/routes/index.[ext]`; both React Router and TanStack Router variants use middleware guards instead of component wrappers.
+- **`emitRoutes` output path** changed from `src/router/routes.generated.[ext]` → `src/routes/routes.generated.[ext]`.
+- **Base `index.css`** — expanded from a single `@import` to full CSS variable token set (light + dark themes) so `ThemeToggle` and shadcn primitives work on all variants.
+- **`vite.config.[sext]`** — expanded `resolve.alias` to include every canonical `src/` subfolder; added `test` block (jsdom + setup file path).
+- **`tsconfig.app.json`** + **`jsconfig.json`** — `paths` expanded with `@/components/*`, `@/features/*`, `@/hooks/*`, `@/lib/*`, `@/store/*`, `@/config/*`, `@/middlewares/*`, `@/models/*`, `@/types/*`, `@/providers/*`, `@/routes/*`, `@/constants/*`, `@/assets/*`.
+- **`vite-env.d.ts`** — now includes `interface ImportMetaEnv` for typed env access.
+- **`src/deps/resolve.ts`** — base prod deps now include `clsx`, `tailwind-merge`, `zustand`, `axios`, `@tanstack/react-query`, `next-themes` for all variants; removed `clsx` + `tailwind-merge` from shadcn-only branch.
+- **`src/deps/versions.lock.json`** — pinned `zustand ^5.0.5`, `axios ^1.9.0`, `@tanstack/react-query ^5.80.5`, `next-themes ^0.4.6`.
+- **shadcn `src/lib/utils.[ext].ejs` deleted** — the file now lives in base layer.
+
+### Feature slice refactoring (all features now conform to canonical shape)
+
+- **`home`** — `pages/Home`, `data/features.[sext]`, `components/`, `index.[sext]` barrel.
+- **`auth`** — deleted `AuthContext`, global `useAuth`, `ProtectedRoute`, `AdminRoute`; added `schemas/` (zod: login, signup, forgotPassword), `api/auth.api`, `services/auth.service`, `hooks/` (useLoginMutation, useSignupMutation, useForgotPasswordMutation), `layouts/AuthLayout`, `types/auth.type`, `index.[sext]` barrel. All three pages rewritten to use `react-hook-form` + `zodResolver`.
+- **`user-dashboard`** — `DashboardLayout` moved `components/` → `layouts/`; stat cards extracted to `data/stats.[sext]`; imports migrated from `useAuth` to `useAuthStore`; `index.[sext]` barrel added.
+- **`admin-dashboard`** — `AdminLayout` moved `components/` → `layouts/`; `MOCK_USERS` → `data/users.[sext]`; `UserRow` type → `types/user.type.[sext]`; `getUsers` stub → `api/getUsers.[sext]`; `useUsersQuery` → `hooks/useUsersQuery.[sext]`; `UsersTable` now uses TanStack Query; `index.[sext]` barrel added.
+
+### Tests
+
+- `tests/unit/resolve.test.ts` — 2 new assertions for universal base deps (clsx, tailwind-merge, zustand, axios, react-query, next-themes).
+- `tests/unit/manifest.test.ts` — `emitRoutes` path assertions updated to `src/routes/`.
+- `tests/unit/compose.test.ts` — `landing` → `home` in FEATURES assertions; route path updated.
+- `tests/snapshot/__snapshots__/permutations.test.ts.snap` — 24 snapshots regenerated; new file tree includes canonical src/ structure.
+- **93 tests passing** (was 91).
+
+---
+
 ## [0.1.2] — HeroUI v3 & TypeScript 6 compatibility — 2026-05-03
 
 ### Fixed

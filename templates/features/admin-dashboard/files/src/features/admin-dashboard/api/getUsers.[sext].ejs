@@ -1,0 +1,11 @@
+import { MOCK_USERS } from '@/features/admin-dashboard/data/users';
+<% if (isTS) { %>
+import type { UserRow } from '@/features/admin-dashboard/types/user.type';
+
+export async function getUsers(): Promise<UserRow[]> {
+<% } else { %>
+export async function getUsers() {
+<% } %>
+  await new Promise(r => setTimeout(r, 300));
+  return MOCK_USERS;
+}

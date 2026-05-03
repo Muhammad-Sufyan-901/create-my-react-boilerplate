@@ -8,16 +8,14 @@ import { Button } from '@/components/ui/button';
 <% } else { %>
 import { Button } from '@heroui/react';
 <% } %>
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const NAV = [
   { to: '/dashboard', label: 'Dashboard' },
-  { to: '/dashboard/profile', label: 'Profile' },
-  { to: '/dashboard/settings', label: 'Settings' },
 ];
 
 export default function Sidebar() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {

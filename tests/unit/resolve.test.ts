@@ -65,6 +65,24 @@ describe('getBaseDeps', () => {
     expect(prod).not.toContain('@heroui/react');
   });
 
+  it('always includes universal utilities (clsx, tailwind-merge, zustand, axios, react-query, next-themes)', () => {
+    const { prod } = getBaseDeps(BASE_CTX);
+    expect(prod).toContain('clsx');
+    expect(prod).toContain('tailwind-merge');
+    expect(prod).toContain('zustand');
+    expect(prod).toContain('axios');
+    expect(prod).toContain('@tanstack/react-query');
+    expect(prod).toContain('next-themes');
+  });
+
+  it('includes universal utilities even for heroui variant', () => {
+    const ctx = { ...BASE_CTX, ui: 'heroui' as const };
+    const { prod } = getBaseDeps(ctx);
+    expect(prod).toContain('clsx');
+    expect(prod).toContain('tailwind-merge');
+    expect(prod).toContain('zustand');
+  });
+
   it('includes typescript and @types/* in dev for TS context', () => {
     const { dev } = getBaseDeps(BASE_CTX);
     expect(dev).toContain('typescript');

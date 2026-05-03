@@ -1,0 +1,22 @@
+<% if (router === 'react-router') { %>
+import { redirect } from 'react-router';
+import { useAuthStore } from '@/store/useAuthStore';
+
+export function guestMiddleware() {
+  const { isAuthenticated } = useAuthStore.getState();
+  if (isAuthenticated) {
+    return redirect('/dashboard');
+  }
+  return null;
+}
+<% } else { %>
+import { redirect } from '@tanstack/react-router';
+import { useAuthStore } from '@/store/useAuthStore';
+
+export function guestMiddleware() {
+  const { isAuthenticated } = useAuthStore.getState();
+  if (isAuthenticated) {
+    throw redirect({ to: '/dashboard' });
+  }
+}
+<% } %>

@@ -1,0 +1,11 @@
+<% if (isTS) { %>
+import type { UserRow } from '@/features/admin-dashboard/types/user.type';
+
+export const MOCK_USERS: UserRow[] = [
+<% } else { %>
+export const MOCK_USERS = [
+<% } %>
+  { id: '1', name: 'Alice Johnson', email: 'alice@example.com', role: 'admin', joined: '2024-01-10' },
+  { id: '2', name: 'Bob Smith',     email: 'bob@example.com',   role: 'user',  joined: '2024-02-14' },
+  { id: '3', name: 'Carol White',   email: 'carol@example.com', role: 'user',  joined: '2024-03-05' },
+];

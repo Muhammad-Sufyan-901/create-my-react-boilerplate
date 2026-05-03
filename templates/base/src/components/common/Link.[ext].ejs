@@ -1,0 +1,26 @@
+import { cn } from '@/lib/utils';
+<% if (router === 'react-router') { %>
+import { Link as RouterLink } from 'react-router';
+<% if (isTS) { %>
+import type { LinkProps } from 'react-router';
+
+interface AppLinkProps extends LinkProps {}
+
+export function Link({ className, ...props }: AppLinkProps) {
+<% } else { %>
+export function Link({ className, ...props }) {
+<% } %>
+  return <RouterLink className={cn('underline-offset-4 hover:underline', className)} {...props} />;
+}
+<% } else { %>
+import { Link as RouterLink } from '@tanstack/react-router';
+<% if (isTS) { %>
+import type { LinkProps } from '@tanstack/react-router';
+
+export function Link({ className, ...props }: LinkProps) {
+<% } else { %>
+export function Link({ className, ...props }) {
+<% } %>
+  return <RouterLink className={cn('underline-offset-4 hover:underline', className)} {...props} />;
+}
+<% } %>

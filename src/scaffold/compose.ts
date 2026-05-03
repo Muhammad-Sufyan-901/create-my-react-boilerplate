@@ -7,7 +7,7 @@ import { pkgRoot } from '../utils/fs.js';
 import type { ScaffoldContext, ComposedDeps } from '../types.js';
 
 const FEATURES = [
-  'landing',
+  'home',
   'auth',
   'user-dashboard',
   'admin-dashboard',

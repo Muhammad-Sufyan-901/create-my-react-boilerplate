@@ -277,3 +277,64 @@ These add two more layers that slot cleanly into the existing composition model:
 - `templates/tooling/ci/` — `.github/workflows/ci.yml` parameterized by chosen package manager.
 
 Each feature manifest gains an optional `tests: [...]` field so the Vitest layer knows which example test files to drop in alongside that feature's source.
+
+---
+
+## Architecture Refactoring Plan (Phase H — 2026-05-03)
+
+### Problem
+
+The templates emitted a `src/` tree that diverged significantly from the "Generated App Architecture Standard" documented in `CLAUDE.md`:
+
+- Auth state in React Context (`src/context/AuthContext`) instead of Zustand.
+- Route guards as React wrapper components (`<ProtectedRoute>`, `<AdminRoute>`) instead of route-level middlewares.
+- `cn()` utility only available in the shadcn variant (missing from HeroUI builds).
+- Router entry at `src/router/` (singular file) instead of `src/routes/` (folder).
+- Feature slices had only `components/` + `pages/` — missing `api/`, `data/`, `hooks/`, `layouts/`, `schemas/`, `services/`, `types/`, and `index.ts` barrel.
+- Auth forms used raw `useState` despite `react-hook-form` + `zod` already declared in `feature.json`.
+- The base scaffold was missing: `components/common`, `components/layouts`, `config`, `constants`, `hooks`, `lib`, `middlewares`, `models`, `providers`, `store`, `types`, `assets`.
+- `landing` feature renamed to `home` to align with conventions.
+
+### Strategy
+
+1. **Hoist universal pieces into `templates/base/`** — no new composition layer; the `base → lang → router → ui → tooling → features` order stays intact.
+2. **Replace, don't duplicate** — delete obsolete files in the same pass that introduces replacements.
+3. **Path migration** — all `@/router`, `@/context/AuthContext`, `@/hooks/useAuth` references rewritten.
+4. **Feature by feature** — home → auth → user-dashboard → admin-dashboard.
+5. **Version bump to `0.2.0`** — breaking change for downstream consumers.
+
+### New canonical `src/` shape (all variants)
+
+```
+src/
+  assets/
+  components/
+    common/      Box, Container, Text, Heading, Image, Link, NotFound, ThemeToggle
+    layouts/     RootLayout
+    ui/          UI-lib primitives (shadcn or heroui — existing ui layer)
+  config/        env.[ext]
+  constants/
+  features/
+    home/        pages/Home + data/features + components + index.ts
+    auth/        pages + schemas + hooks + api + services + layouts + types + index.ts
+    user-dashboard/   pages + layouts + data + hooks + index.ts
+    admin-dashboard/  pages + layouts + components + data + api + hooks + types + index.ts
+  hooks/         useMobile, useTheme
+  lib/           axios.[ext], utils.[ext] (cn)
+  middlewares/   authMiddleware.[ext], guestMiddleware.[ext]
+  models/        user.model.[ext]
+  providers/     theme-provider.[ext]
+  routes/        index.[ext] + routes.generated.[ext]
+  store/         useAuthStore.[ext]
+  types/         api.type.[ext] + models/
+  index.css
+  main.[ext]
+```
+
+### CLI source changes
+
+- `src/deps/resolve.ts` — add `clsx`, `tailwind-merge`, `zustand`, `axios`, `@tanstack/react-query`, `next-themes` to base prod deps; remove them from shadcn-only branch.
+- `src/deps/versions.lock.json` — pin new packages.
+- `src/scaffold/manifest.ts` — `emitRoutes` output path `src/router/` → `src/routes/`.
+- `src/scaffold/compose.ts` — `'landing'` → `'home'` in FEATURES array.
+- `package.json` — version `0.1.2` → `0.2.0`.

@@ -1,0 +1,25 @@
+import { useMutation } from '@tanstack/react-query';
+import { authService } from '@/features/auth/services/auth.service';
+<% if (isTS) { %>
+import type { LoginFormData } from '@/features/auth/schemas/login.schema';
+<% } %>
+<% if (router === 'react-router') { %>
+import { useNavigate } from 'react-router';
+<% } else { %>
+import { useNavigate } from '@tanstack/react-router';
+<% } %>
+
+export function useLoginMutation() {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: (data<% if (isTS) { %>: LoginFormData<% } %>) => authService.login(data),
+    onSuccess: () => {
+<% if (router === 'react-router') { %>
+      navigate('/dashboard');
+<% } else { %>
+      void navigate({ to: '/dashboard' });
+<% } %>
+    },
+  });
+}

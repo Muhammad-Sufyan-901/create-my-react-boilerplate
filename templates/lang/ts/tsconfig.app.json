@@ -17,7 +17,22 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/constants/*": ["./src/constants/*"],
+      "@/features/*": ["./src/features/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/middlewares/*": ["./src/middlewares/*"],
+      "@/models/*": ["./src/models/*"],
+      "@/providers/*": ["./src/providers/*"],
+      "@/routes/*": ["./src/routes/*"],
+      "@/store/*": ["./src/store/*"],
+      "@/types/*": ["./src/types/*"]
+    }
   },
   "include": ["src"]
 }

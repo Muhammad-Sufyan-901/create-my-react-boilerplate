@@ -71,7 +71,7 @@ export async function emitRoutes(
   const outPath = path.join(
     ctx.targetDir,
     'src',
-    'router',
+    'routes',
     `routes.generated.${ctx.ext}`,
   );
 

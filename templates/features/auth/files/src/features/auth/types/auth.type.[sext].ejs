@@ -1,0 +1,39 @@
+<% if (isTS) { %>
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface SignupFormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordFormData {
+  email: string;
+}
+
+export interface AuthResponse {
+  user: import('@/models/user.model').User;
+  token: string;
+}
+<% } else { %>
+/**
+ * @typedef {Object} LoginFormData
+ * @property {string} email
+ * @property {string} password
+ */
+
+/**
+ * @typedef {Object} SignupFormData
+ * @property {string} name
+ * @property {string} email
+ * @property {string} password
+ */
+
+/**
+ * @typedef {Object} ForgotPasswordFormData
+ * @property {string} email
+ */
+<% } %>

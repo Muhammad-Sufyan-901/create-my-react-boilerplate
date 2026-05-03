@@ -75,21 +75,21 @@ async function buildMinimalTemplates(
 describe('composeProject', () => {
   it('creates the target directory', async () => {
     const ctx = { ...CTX, targetDir };
-    await buildMinimalTemplates(templatesDir, ctx, ['landing', 'auth', 'user-dashboard', 'admin-dashboard']);
+    await buildMinimalTemplates(templatesDir, ctx, ['home', 'auth', 'user-dashboard', 'admin-dashboard']);
     await composeProject(ctx, templatesDir);
     expect(await fs.pathExists(targetDir)).toBe(true);
   });
 
   it('copies base layer files into targetDir', async () => {
     const ctx = { ...CTX, targetDir };
-    await buildMinimalTemplates(templatesDir, ctx, ['landing', 'auth', 'user-dashboard', 'admin-dashboard']);
+    await buildMinimalTemplates(templatesDir, ctx, ['home', 'auth', 'user-dashboard', 'admin-dashboard']);
     await composeProject(ctx, templatesDir);
     expect(await fs.pathExists(path.join(targetDir, 'index.html'))).toBe(true);
   });
 
   it('copies lang layer files (later layer wins over base)', async () => {
     const ctx = { ...CTX, targetDir };
-    await buildMinimalTemplates(templatesDir, ctx, ['landing', 'auth', 'user-dashboard', 'admin-dashboard']);
+    await buildMinimalTemplates(templatesDir, ctx, ['home', 'auth', 'user-dashboard', 'admin-dashboard']);
     // Also put tsconfig in base — lang layer should win
     await fs.outputFile(path.join(templatesDir, 'base', 'tsconfig.json'), '{"base":true}');
     await fs.outputFile(path.join(templatesDir, 'lang', ctx.language, 'tsconfig.json'), '{"lang":true}');
@@ -100,28 +100,28 @@ describe('composeProject', () => {
 
   it('emits routes.generated.[ext] from feature manifests', async () => {
     const ctx = { ...CTX, targetDir };
-    await buildMinimalTemplates(templatesDir, ctx, ['landing', 'auth', 'user-dashboard', 'admin-dashboard']);
+    await buildMinimalTemplates(templatesDir, ctx, ['home', 'auth', 'user-dashboard', 'admin-dashboard']);
     await composeProject(ctx, templatesDir);
-    const routesPath = path.join(targetDir, 'src', 'router', 'routes.generated.tsx');
+    const routesPath = path.join(targetDir, 'src', 'routes', 'routes.generated.tsx');
     expect(await fs.pathExists(routesPath)).toBe(true);
     const content = await fs.readFile(routesPath, 'utf8');
-    expect(content).toContain('/landing');
+    expect(content).toContain('/home');
     expect(content).toContain('/auth');
   });
 
   it('returns merged ComposedDeps from all feature manifests', async () => {
     const ctx = { ...CTX, targetDir };
-    await buildMinimalTemplates(templatesDir, ctx, ['landing', 'auth', 'user-dashboard', 'admin-dashboard']);
+    await buildMinimalTemplates(templatesDir, ctx, ['home', 'auth', 'user-dashboard', 'admin-dashboard']);
     const deps = await composeProject(ctx, templatesDir);
-    expect(deps.prod).toContain('landing-dep');
+    expect(deps.prod).toContain('home-dep');
     expect(deps.prod).toContain('auth-dep');
   });
 
   it('works with JS context (ext = jsx)', async () => {
     const jsCtx = { ...CTX, targetDir, language: 'js' as const, isTS: false, ext: 'jsx' };
-    await buildMinimalTemplates(templatesDir, jsCtx, ['landing', 'auth', 'user-dashboard', 'admin-dashboard']);
+    await buildMinimalTemplates(templatesDir, jsCtx, ['home', 'auth', 'user-dashboard', 'admin-dashboard']);
     await composeProject(jsCtx, templatesDir);
-    const routesPath = path.join(targetDir, 'src', 'router', 'routes.generated.jsx');
+    const routesPath = path.join(targetDir, 'src', 'routes', 'routes.generated.jsx');
     expect(await fs.pathExists(routesPath)).toBe(true);
   });
 });

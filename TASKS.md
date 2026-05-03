@@ -82,3 +82,76 @@ Extracted from `PLANNING.md`. Check off each item as it is completed; update `CH
 - [ ] `npm publish --access public` — **requires npm credentials; run manually:** `npm publish --access public`
 - [x] GitHub Actions: PR test matrix (Node 20+22) in `.github/workflows/ci.yml`; auto-publish on `v*` tag in `.github/workflows/publish.yml` (uses `NPM_TOKEN` secret)
 - [ ] Verify `npx create-my-react-boilerplate test-app` works end-to-end — **run after publishing**
+
+---
+
+## Phase H — Architecture Refactoring
+
+### H1 — Bookkeeping & CLI Source
+
+- [x] Append `## Architecture Refactoring Plan` to `PLANNING.md`
+- [x] Append `## Phase H` checklist to `TASKS.md`
+- [x] Bump `package.json` version to `0.2.0`
+- [x] `src/deps/resolve.ts` — add `clsx`, `tailwind-merge`, `zustand`, `axios`, `@tanstack/react-query`, `next-themes` to base prod deps; remove from shadcn-only branch
+- [x] `src/deps/versions.lock.json` — pin all new packages
+- [x] `src/scaffold/manifest.ts` — change `emitRoutes` output path to `src/routes/routes.generated.[ext]`
+- [x] `src/scaffold/compose.ts` — rename `'landing'` → `'home'` in FEATURES array
+
+### H2 — Base Layer Additions
+
+- [x] `templates/base/src/lib/utils.[ext].ejs` — `cn()` helper (moved from shadcn layer; now universal)
+- [x] `templates/base/src/lib/axios.[ext].ejs` — Axios instance with auth interceptor
+- [x] `templates/base/src/config/env.[ext].ejs` — typed env loader
+- [x] `templates/base/src/constants/index.[ext].ejs` — placeholder constants barrel
+- [x] `templates/base/src/models/user.model.[ext].ejs` — `User` domain shape
+- [x] `templates/base/src/types/api.type.[ext].ejs` — shared API envelope type
+- [x] `templates/base/src/store/useAuthStore.[ext].ejs` — Zustand auth store with sessionStorage persist
+- [x] `templates/base/src/middlewares/authMiddleware.[ext].ejs` — route guard (beforeLoad / loader)
+- [x] `templates/base/src/middlewares/guestMiddleware.[ext].ejs` — guest-only guard
+- [x] `templates/base/src/providers/theme-provider.[ext].ejs` — next-themes wrapper
+- [x] `templates/base/src/hooks/useMobile.[ext].ejs` + `useTheme.[ext].ejs`
+- [x] `templates/base/src/components/common/` — Box, Container, Text, Heading, Image, Link, NotFound, ThemeToggle
+- [x] `templates/base/src/components/layouts/RootLayout.[ext].ejs`
+- [x] `.gitkeep` scaffolds for `assets/`, `routes/`, `features/`, `constants/`, `types/models/`
+
+### H3 — Base Layer Rewrites
+
+- [x] `templates/base/src/main.[ext].ejs` — drop AuthProvider; add ThemeProvider + QueryClientProvider; import from `@/routes`
+- [x] `templates/base/src/index.css` — add CSS variables / theme tokens
+- [x] `templates/base/vite.config.[sext].ejs` — expanded alias map + Vitest test block
+
+### H4 — Lang Layer
+
+- [x] `templates/lang/ts/tsconfig.app.json` — extend `paths` with all new `@/<folder>/*` aliases
+- [x] `templates/lang/ts/src/vite-env.d.ts` — add `ImportMetaEnv` interface
+- [x] `templates/lang/js/jsconfig.json` — mirror alias map
+
+### H5 — UI Layer
+
+- [x] Delete `templates/ui/shadcn/src/lib/utils.[ext].ejs` (moved to base)
+
+### H6 — Router Layer
+
+- [x] Move `templates/router/react-router/files/src/router/` → `src/routes/`; rewrite to use loader-based guards
+- [x] Move `templates/router/tanstack-router/files/src/router/` → `src/routes/`; rewrite to use `beforeLoad` guards
+
+### H7 — Features
+
+- [x] Rename `templates/features/landing/` → `templates/features/home/`; update `feature.json`
+- [x] `home`: restructure to `pages/Home`, `data/features`, `index.ts` barrel
+- [x] `auth`: delete AuthContext, useAuth, ProtectedRoute, AdminRoute; add schemas, api, hooks, services, types, layouts/AuthLayout, barrel
+- [x] `auth` pages: rewrite Login/Signup/ForgotPassword to use react-hook-form + zod
+- [x] `user-dashboard`: move DashboardLayout → layouts; extract stats → data; update imports; add barrel
+- [x] `admin-dashboard`: move AdminLayout → layouts; split UsersTable into data/types/api/hooks; add barrel
+
+### H8 — Tests & Verification
+
+- [x] `tests/unit/resolve.test.ts` — assert new base prod deps
+- [x] `tests/unit/manifest.test.ts` — update `emitRoutes` path assertion
+- [x] `tests/unit/compose.test.ts` — update FEATURES `landing` → `home`
+- [x] Delete snapshot file; run `npm run build && npm test` to regenerate (93 tests passing, 24 snapshots written)
+- [x] `tests/e2e/cli.test.ts` — no changes needed (no old path references)
+
+### H9 — Documentation
+
+- [x] `CHANGELOG.md` — add `[0.2.0]` entry documenting all structural changes

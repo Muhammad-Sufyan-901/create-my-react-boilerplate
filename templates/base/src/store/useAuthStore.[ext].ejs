@@ -1,0 +1,41 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+<% if (isTS) { %>
+import type { User } from '@/models/user.model';
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (user: User, token: string) => void;
+  signup: (user: User, token: string) => void;
+  logout: () => void;
+}
+<% } %>
+
+export const useAuthStore = create<% if (isTS) { %><AuthState><% } %>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      login: (user<% if (isTS) { %>: User<% } %>, token<% if (isTS) { %>: string<% } %>) =>
+        set({ user, token, isAuthenticated: true }),
+      signup: (user<% if (isTS) { %>: User<% } %>, token<% if (isTS) { %>: string<% } %>) =>
+        set({ user, token, isAuthenticated: true }),
+      logout: () =>
+        set({ user: null, token: null, isAuthenticated: false }),
+    }),
+    {
+      name: 'auth-storage',
+      storage: {
+        getItem: (key) => {
+          const item = sessionStorage.getItem(key);
+          return item ? JSON.parse(item) : null;
+        },
+        setItem: (key, value) => sessionStorage.setItem(key, JSON.stringify(value)),
+        removeItem: (key) => sessionStorage.removeItem(key),
+      },
+    },
+  ),
+);

@@ -1,0 +1,15 @@
+import { useTheme } from '@/hooks/useTheme';
+
+export function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+
+  return (
+    <button
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      className="rounded-md p-2 transition-colors hover:bg-accent"
+      aria-label="Toggle theme"
+    >
+      {resolvedTheme === 'dark' ? '☀️' : '🌙'}
+    </button>
+  );
+}
