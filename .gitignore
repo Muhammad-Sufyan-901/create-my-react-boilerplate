@@ -30,3 +30,7 @@ Thumbs.db
 # Claude Code internals
 .claude/
 .agents/
+
+# Test App
+my-test-app/
+
