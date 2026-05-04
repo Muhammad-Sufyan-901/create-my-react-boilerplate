@@ -2,53 +2,29 @@
 
 ---
 
-## [0.2.0] — Architecture Refactoring (Phase H) — 2026-05-03
+## [0.2.1] — Smoke-test bug fixes — 2026-05-04
 
-**Breaking change** — generated project structure has been completely overhauled to match the "Generated App Architecture Standard" in `CLAUDE.md`. All existing generated projects are incompatible; re-scaffold from this version.
+Found and fixed during end-to-end smoke testing (TS + TanStack Router + HeroUI). Phase H templates compiled but the generated project had three TypeScript errors and five obsolete template files that were not cleaned up in the Phase H commit.
 
-### Added
+### Fixed
 
-- **`src/store/useAuthStore.[ext]`** — Zustand auth store with `persist` middleware (sessionStorage); replaces React Context. API: `user`, `token`, `isAuthenticated`, `login`, `signup`, `logout`.
-- **`src/middlewares/authMiddleware.[ext]`** + **`guestMiddleware.[ext]`** — route-level guards. TanStack Router: `beforeLoad`. React Router: `loader`. No longer React wrapper components.
-- **`src/lib/utils.[ext]`** — `cn()` helper (`clsx` + `tailwind-merge`) promoted to base layer so both shadcn and HeroUI builds have it.
-- **`src/lib/axios.[ext]`** — preconfigured Axios instance with auth-header interceptor and 401 logout.
-- **`src/config/env.[ext]`** — typed env loader (`VITE_API_URL`, `VITE_APP_NAME`).
-- **`src/models/user.model.[ext]`** — `User` domain shape.
-- **`src/types/api.type.[ext]`** — `ApiResponse<T>` and `ApiError` envelopes.
-- **`src/providers/theme-provider.[ext]`** — `next-themes` wrapper.
-- **`src/hooks/useMobile.[ext]`** + **`useTheme.[ext]`** — universal hooks.
-- **`src/components/common/`** — polymorphic primitives: `Box`, `Container`, `Text`, `Heading`, `Image`, `Link`, `NotFound`, `ThemeToggle`.
-- **`src/components/layouts/RootLayout.[ext]`** — top-level layout wrapping `<Outlet/>`.
-- **`.gitkeep` scaffolds** for `src/assets/`, `src/routes/`, `src/features/`, `src/types/models/`.
-- **`main.[ext]`** now wraps app in `<QueryClientProvider>` + `<ThemeProvider>` (dropped `<AuthProvider>`).
-
-### Changed
-
-- **`landing` → `home` feature** — directory, `feature.json.id`, route component path all updated.
-- **Router entry point moved** from `templates/router/*/files/src/router/index.[ext]` to `src/routes/index.[ext]`; both React Router and TanStack Router variants use middleware guards instead of component wrappers.
-- **`emitRoutes` output path** changed from `src/router/routes.generated.[ext]` → `src/routes/routes.generated.[ext]`.
-- **Base `index.css`** — expanded from a single `@import` to full CSS variable token set (light + dark themes) so `ThemeToggle` and shadcn primitives work on all variants.
-- **`vite.config.[sext]`** — expanded `resolve.alias` to include every canonical `src/` subfolder; added `test` block (jsdom + setup file path).
-- **`tsconfig.app.json`** + **`jsconfig.json`** — `paths` expanded with `@/components/*`, `@/features/*`, `@/hooks/*`, `@/lib/*`, `@/store/*`, `@/config/*`, `@/middlewares/*`, `@/models/*`, `@/types/*`, `@/providers/*`, `@/routes/*`, `@/constants/*`, `@/assets/*`.
-- **`vite-env.d.ts`** — now includes `interface ImportMetaEnv` for typed env access.
-- **`src/deps/resolve.ts`** — base prod deps now include `clsx`, `tailwind-merge`, `zustand`, `axios`, `@tanstack/react-query`, `next-themes` for all variants; removed `clsx` + `tailwind-merge` from shadcn-only branch.
-- **`src/deps/versions.lock.json`** — pinned `zustand ^5.0.5`, `axios ^1.9.0`, `@tanstack/react-query ^5.80.5`, `next-themes ^0.4.6`.
-- **shadcn `src/lib/utils.[ext].ejs` deleted** — the file now lives in base layer.
-
-### Feature slice refactoring (all features now conform to canonical shape)
-
-- **`home`** — `pages/Home`, `data/features.[sext]`, `components/`, `index.[sext]` barrel.
-- **`auth`** — deleted `AuthContext`, global `useAuth`, `ProtectedRoute`, `AdminRoute`; added `schemas/` (zod: login, signup, forgotPassword), `api/auth.api`, `services/auth.service`, `hooks/` (useLoginMutation, useSignupMutation, useForgotPasswordMutation), `layouts/AuthLayout`, `types/auth.type`, `index.[sext]` barrel. All three pages rewritten to use `react-hook-form` + `zodResolver`.
-- **`user-dashboard`** — `DashboardLayout` moved `components/` → `layouts/`; stat cards extracted to `data/stats.[sext]`; imports migrated from `useAuth` to `useAuthStore`; `index.[sext]` barrel added.
-- **`admin-dashboard`** — `AdminLayout` moved `components/` → `layouts/`; `MOCK_USERS` → `data/users.[sext]`; `UserRow` type → `types/user.type.[sext]`; `getUsers` stub → `api/getUsers.[sext]`; `useUsersQuery` → `hooks/useUsersQuery.[sext]`; `UsersTable` now uses TanStack Query; `index.[sext]` barrel added.
+- **`templates/base/src/components/common/Link.[ext].ejs`** — TanStack Router's exported `LinkProps` type covers only router-specific navigation options (`to`, `params`, `search`, `hash`, …), not the underlying HTML anchor attributes (including `className`). TypeScript correctly rejected the destructure. Fixed by switching the type annotation to `ComponentProps<typeof RouterLink>`, which is React's utility type for extracting the fully resolved props of a component reference — this includes both router options (via `LinkComponentProps`) and anchor HTML attributes (via `LinkComponentReactProps → UseLinkReactProps`). Affects the TypeScript variant only; the JS variant is untyped and was unaffected.
+- **`templates/base/vite.config.[sext].ejs`** — Vitest v4 removed the `declare module 'vite'` module augmentation that previously powered the `/// <reference types="vitest" />` trick. Without the augmentation, TypeScript correctly reports `'test' does not exist in type 'UserConfigExport'`. Fixed by changing `import { defineConfig } from 'vite'` → `import { defineConfig } from 'vitest/config'`. The `vitest/config` package re-exports the full Vite config type extended with the `test` property, so all existing plugin/alias/resolve configuration works unchanged.
+- **`templates/router/tanstack-router/files/src/routes/index.[ext].ejs`** — `Outlet` was imported from `@tanstack/react-router` but never used in the file (the root route's `component: RootLayout` renders `<Outlet />` internally). Removed to eliminate the `TS6133: 'Outlet' is declared but its value is never read` error.
+- **Obsolete files deleted** (missed in Phase H commit `9fe4e82` — new replacements were added but the originals were not removed):
+  - `templates/features/auth/files/src/context/AuthContext.[ext].ejs` — superseded by `src/store/useAuthStore.[ext].ejs` (Zustand + sessionStorage persist)
+  - `templates/features/auth/files/src/features/auth/components/ProtectedRoute.[ext].ejs` — superseded by `src/middlewares/authMiddleware.[ext].ejs` (route-level `loader` / `beforeLoad`)
+  - `templates/features/auth/files/src/features/auth/components/AdminRoute.[ext].ejs` — superseded by same middleware pattern
+  - `templates/features/auth/files/src/hooks/useAuth.[ext].ejs` — superseded by `useAuthStore` selector hooks
+  - `templates/features/user-dashboard/files/src/features/user-dashboard/components/DashboardLayout.[ext].ejs` — moved to `layouts/DashboardLayout.[ext].ejs` in Phase H
+  - `templates/router/react-router/files/src/router/index.[ext].ejs` — replaced by `src/routes/index.[ext].ejs`
+  - `templates/router/tanstack-router/files/src/router/index.[ext].ejs` — replaced by `src/routes/index.[ext].ejs`
+- **`.gitignore`** — added `my-test-app/` to exclude local smoke-test artefacts from version control.
 
 ### Tests
 
-- `tests/unit/resolve.test.ts` — 2 new assertions for universal base deps (clsx, tailwind-merge, zustand, axios, react-query, next-themes).
-- `tests/unit/manifest.test.ts` — `emitRoutes` path assertions updated to `src/routes/`.
-- `tests/unit/compose.test.ts` — `landing` → `home` in FEATURES assertions; route path updated.
-- `tests/snapshot/__snapshots__/permutations.test.ts.snap` — 24 snapshots regenerated; new file tree includes canonical src/ structure.
-- **93 tests passing** (was 91).
+- `tests/snapshot/__snapshots__/permutations.test.ts.snap` — 24 snapshots regenerated to reflect the `vitest/config` import change in `vite.config.[sext]`.
+- **93 tests passing** (unchanged from 0.2.0; no regressions).
 
 ---
 

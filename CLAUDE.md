@@ -139,7 +139,46 @@ The scaffolder walks all feature directories automatically.
 
 ## Documentation & Changelog
 
-- **Mandatory Changelog Updates**: Whenever you are tasked with making structural changes, refactoring EJS templates, adding new Starter Pack features, or introducing new variants to this repository, you MUST automatically document your changes in the `CHANGELOG.md` file. Always add your updates under an `[Unreleased]` section or the current date to maintain a clear history of modifications. Do not wait for explicit instructions to update the changelog if you have modified the generator's output or source code.
+**Mandatory rule**: Whenever you modify any source file in `src/`, any EJS template under `templates/`, any test in `tests/`, or any configuration file (`package.json`, `tsup.config.ts`, `vitest.config.ts`, `.github/workflows/`), you MUST update `CHANGELOG.md` before committing. Do not wait to be asked.
+
+### Format
+
+Every entry goes under a versioned heading at the top of the file, immediately after the `# CHANGELOG` title and `---` separator:
+
+```markdown
+## [X.Y.Z] — Short title — YYYY-MM-DD
+
+One-sentence summary of what changed and why (not a list of files — a sentence about the user-facing outcome).
+
+### Fixed / Added / Changed / Removed  (use only the sections that apply)
+
+- **`path/to/file.[ext]`** — what changed and **why**: include the root cause for Fixed entries (what TypeScript error, what runtime failure, which behaviour was wrong) and the design intent for Added/Changed entries (what problem it solves, what contract it establishes).
+```
+
+### Rules
+
+1. **One entry per version bump.** Do not write one entry per commit. The entry for a version accumulates all changes made before the version is tagged.
+2. **Describe root causes, not just symptoms.** For `Fixed` items, explain *why* the fix works, not just what changed. "Changed X to Y" is not enough — "Changed X to Y because Z caused TypeScript to reject the destructure" is.
+3. **Do not duplicate content across versions.** If an item was documented in `[0.2.0]`, it must not reappear in `[0.2.1]`. Each version entry covers only the delta introduced in that version.
+4. **Reference template paths, not generated paths.** Write `templates/base/src/lib/utils.[ext].ejs`, not `src/lib/utils.ts`. Readers of this file work in the CLI source repo, not in a generated app.
+5. **Include test counts.** End every entry that touches tests with a line like `**N tests passing** (was M)` so regressions are immediately visible in the log.
+6. **Keep the title short.** The heading title (after the version number) should be a 3–6 word label that identifies the theme of the release, not a sentence.
+7. **Date is required.** Use `YYYY-MM-DD` in UTC+0 or the user's local timezone — pick one and be consistent. Do not use relative dates ("today", "this week").
+
+### What triggers a changelog entry
+
+| Change | Required? |
+|---|---|
+| New or modified EJS template | Yes |
+| New or deleted template file | Yes |
+| `src/` source change | Yes |
+| `package.json` version bump | Yes |
+| New test or updated test assertion | Yes |
+| Snapshot regeneration | Yes (note count) |
+| `CLAUDE.md` / `PLANNING.md` / `TASKS.md` update | Only if it documents a technical decision |
+| `README.md` user-facing docs | Yes |
+| CI workflow change | Yes |
+| Formatting-only / whitespace | No |
 
 ## Build notes
 
